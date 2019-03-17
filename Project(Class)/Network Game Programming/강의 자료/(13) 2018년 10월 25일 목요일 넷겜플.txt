@@ -1,0 +1,164 @@
+10.25
+
+소켓 옵션
+알면 나중에 써먹을때가 많이 있을거임
+
+
+운영체제에서 처리하는 부분이 있고 더 로우레벨에서 처리하는 부분이 있는데
+
+알아서 해주니까 신경쓸 필요는 없음  (테이블 존재)
+
+
+
+getsockopt
+setsockopt
+
+level 은 SOL_SOCKET 아니며ㅑㄴ IPPROTO_IP 넣어주면됨
+optval는 옵션에따라 다르게 정의되어있음
+
+
+0리턴받아야 성공, 0 아닌데 진행하면 안됨 **
+
+
+
+
+TCP에서는 꼭 써야함 ****
+
+	SO_KEEPALIVE , 주기적으로 연결 상태 확인 여부
+		
+
+
+
+
+SO_LINGER
+	소켓을 닫아줄때 closesocket() 함수의 리턴 지연 시간 설정
+
+
+
+SO_SNDBUF
+SO_RCVBUF
+	소켓 송/수신 버퍼 크기 설정
+
+
+
+SO_REUSEADDR
+	얘도 서버에서 의무적으로 사용해야함
+
+
+
+
+
+-------------------
+
+IPPROTO_IP 부분은 대부분 멀티 캐스트라 적용하기 어려움
+
+-------------------
+
+
+TCP_NODELAY    
+	Nagle 알고리즘 작동여부 // 다음시간 설명
+
+
+
+
+
+SO_BROADCAST
+
+
+
+SO_KEEPALIVE 옵션
+	TCP에서만 적용가능
+	TCP 프로토콜 수준에서 연결 여부룰 확인하려고 상대 TCP에 주기적으로(약 2시간 간격) TCP 패킷을 보냄
+	비정상적으로 종료했을때? 종료했는지 알 수 없음.
+	물어봤는데 답이없어? 그러면 해당 소켓 삭제해주면 됨
+	대기소켓에 1개만 걸어주면 다른 소켓들은 저절로 이 옵션 끼고 생성이됨
+	서버입장에서 안쓸 이유가 없는 옵션
+	특히 대용량에서는 쓰면 효과 좋음
+
+
+SO_LINGER 옵션
+	send(sock,~); // 데이터를 보낸다. // 송신버퍼로 이동
+	closesocket(sock); // 소켓을 닫는다.
+		// 내보내고 닫을지, 상관없이 닫을지 결정
+
+
+struct linger{
+	on off; //1이면 쓰고 0이면 안씀
+	linger; // time , closesocket()함수가 리턴하지 않고 대기시간 부여
+};
+
+
+	LINGER optval;
+	optval.l_onoff = 1; /* linger on */
+	optval.l_linger = 10; /* linger time = 10초 */
+	retval = setsockopt(sock, SOL_SOCKET, SO_LINGER,
+	(char *)&optval, sizeof(optval));
+	if(retval == SOCKET_ERROR) err_quit("setsockopt()");
+	
+
+디폴트는 0임 안씀
+
+
+1. off, 사용안함
+closesocket() 함수는 곧바로 리턴한되, 송신 버퍼의 데이터를 백그라운드로 모두 보내고 TCP 연결을 정상 종료
+	// 백그라운드에서 돌린다는 말은 나가긴 할껀데 언제 나갈지는 모르지만 나가긴해
+
+2. on, 시간 0
+	데이터 필요없어 연결 그냥 강제종료
+
+3. on, 양수
+	송신 버퍼의 데이터를 모두 보내고 TCP 연결을 정상 종료한 후 closesocket() 함수가 리턴. 
+	일정 시간 안에 송신 버퍼의 데이터를 모두 보내지 못하면 TCP 연결 강제 종료 후 
+	closesocket 함수 리턴. 이때 송신 버퍼에 남은 데이터 삭제
+
+
+텀프로젝트에서 쓸일은 거의 없을 거임
+app 특성에따라 고려해 볼만한 옵션임
+
+
+
+SO_SNDBUF, SO_RCVBUF 옵션
+	데이터를 보낼 때 렉이 걸린다.
+	버퍼 크기가 충분하지 않은거 같을때 사용
+	정하기 전에 버퍼가 몇인지 찾아야하므로 찾고 2배로 늘릴 수 있음.
+ 
+int optval, optlen;
+// 수신 버퍼의 크기를 얻는다.
+optlen = sizeof(optval);
+retval = getsockopt(listen_sock, SOL_SOCKET, SO_RCVBUF,
+(char *)&optval, &optlen);
+if(retval == SOCKET_ERROR) err_quit("getsockopt()");
+printf("수신 버퍼 크기(old) = %d바이트\n", optval);
+// 수신 버퍼의 크기를 두 배로 늘린다.
+optval *= 2;
+retval = setsockopt(listen_sock, SOL_SOCKET, SO_RCVBUF,
+(char *)&optval, sizeof(optval));
+if(retval == SOCKET_ERROR) err_quit("setsockopt()");
+
+
+나중에 과제 하나 더 낼껀데, 이거 이용해서 얼마나 더 좋아질지도 고려?
+
+
+
+
+
+
+SO_SNDTIMEO, SO_RCVTIMEO 옵션
+
+	데이터 전송 함수가 작업 완료와 상관없이 일정 시간 후 리턴하게함. 데드락 예방
+
+
+SO_REUSEADDR 옵션
+	현재 사용 중인 IP주소와 포트 번호를 재사용
+	TCP 서버에서는 무조건 적용해야함
+	유닉스에서는 정말 필요한 옵션.. 멀티 스레드 대신 멀티 프로세서 사용
+	윈도우에서는 멀티 쓰레드 사용하기 때문에, bind가 안되는 문제는 거의 없음
+	하지만 IP주소를 여러개 가지고 있는 서버가 다 접근 할 수 있도록 해줌
+	중요도가 낮기는 하지만 꼭 필요한 옵션임
+		
+
+
+
+
+
+

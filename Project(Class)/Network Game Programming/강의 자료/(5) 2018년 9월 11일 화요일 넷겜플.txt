@@ -1,0 +1,99 @@
+
+
+IP 주소 변환 함수
+
+	127.0.0.1 	// 명령행 인자 
+
+	ping 127.0.0.1
+		인자값으로 아이피 주소를 줌
+
+	ping 이라는 명령어
+		인자로 적어준 IP주소에 해당하는 리모트 머신의 패킷을 4번 보내고
+		돌아오는데 걸리는 시간을 보여주는 유틸리티 명령어
+
+
+루프백 주소
+	자신을 가르킬때 사용하는 IP 주소
+
+	루프백 주소를 사용해서 네트워크를 통해 데이터를 주고 받았을때는
+	오류가 확인이 안되는 경우가 있음 
+
+	결론은 루프백 주소 쓰지마라.믿지마라
+
+
+
+소켓 주소 구조체에 넣기 전에 IP주소를 10진수에서 2진수로 변환 해주어야 한다.
+
+IP주소도 빅엔디안으로 바꾸어 줘야한다.
+
+함수를 사용하면 자동적으로 네트워크 바이트 정렬로 바뀜
+
+
+
+// 소켓 주소 구조체를 초기화한다.
+SOCKADDR_IN addr;
+ZeroMemory(&addr, sizeof(addr)); // 0으로 채움
+addr.sin_family = AF_INET;
+addr.sin_addr.s_addr = inet_addr ("147.46.114.70")  // 2진수로 바꿔주는함수  // 자동으로 빅엔디안으로 바꿔줌
+addr.sin_port = hton(9000);  포트번호는 바꿔줘야함
+
+소켓함수 호출 ~~
+
+
+
+
+
+// 
+SOCKADDR_IN addr;
+int addrlen = sizeof(addr);
+SocketFunc (~, (SOCKADDR *)&addr, &addrlen, ~ );
+
+// 소켓 주소 구조체를 사용한다.
+printf("%s, %d", inet_ntoa(addr.sin_addr), ntohs(addr.sin_prot));
+		2진수를 10진수로 바꿔주는함수, 네트워크를 호스트바이트로 바꾸는 함수
+
+
+
+
+
+
+도메인 이름
+	IP 주소처럼 호스트나 라우터의 고유한 식별자로 사용
+	IP 주소보다 기억하고 사용하기 쉬움
+
+
+	도메인이름을 알면 IP주소를 무조건 찾을 수 있는데 (도메인 이름은 IP주소를 무조건 가짐)
+	IP주소를 안다고 도메인이름을 무조건 알 수는 없음. (서버가 여러개인경우 도메인 이름을 다 걸지않음)
+
+
+
+
+도메인 이름 -> IP 주소 gethostbyname (도메인이름)
+
+
+IP주소 -> 도메인 이름  gethostbyaddr  (IP주소(네트워크 바이트 정렬), IP주소 길이, 주소체계 4or6))
+
+
+두 함수의 리턴 타입이 같음
+
+typedef struct hostent {
+	char* h_name; // official name of host,  공식 도메인 이름
+	char** h_aliases; // alias list, 공식 도메인 이름 외의 별명
+	short h_addrtype; // host address type , AF_INET,AF_INET6
+	short h_length; // length of address
+	char** h_addr_list; // list of addresses    IP 주소를 여러개 넣을 수 있음
+#define h_addr h_addr_list[0] // address, for backward compatibility	// 맨 첫번째를 호스트 IP로 설정
+} HOSTENT;
+
+
+\0로 구분함
+
+리스트는 null까지
+
+
+
+
+
+사용자 정의함수
+	memcpy 
+

@@ -1,0 +1,88 @@
+10.11
+
+UDP
+
+
+1대 다 (ALL)		- 브로드 캐스팅
+
+
+1대 다 (some)		- 멀티 캐스팅
+
+
+애니 캐스팅은 1대1 인데 1이 다시 멀티캐스팅을 하는거 (IPv6)
+
+
+아무때나 쓸 수 있나?
+	라우터들이 캐스팅을 지원해줘야 사용 가능
+	만약 브로드캐스팅을 아무때나 지원해주면 스팸 천국일거임
+	라우터의 옵션을 바꿔서 잠깐 운영 가능 
+
+
+
+
+브로드 캐스팅의 장점은? 
+	데이터를 한번만 보냄
+	만약 하나씩 여러번 동시에 보내면 다 복사본을 만듬, 망을 타고가는 데이터 양이 많아짐
+
+
+
+브로드캐스팅 개념
+
+	송신자가 보낸 데이터 ***하나***를 다수의 수신자가 받는 방식
+	복사본을 여러 개 만들어 보내는 것이 아니므로 송신자 관점에서 보면 상당히 효율적인 기술
+
+
+
+
+	소켓을 생성하면 디폴트로 1대1 통신을 위한 소켓이 생김
+
+	소켓 옵션을 바꿔줘야함 (1대다가 가능하도록)
+
+
+
+
+옵션바꾸기
+
+	
+	BOOL bEnable = TRUE;
+		// SO_BROADCAST의 옵션정보를 TRUE로 변경하기 위한 변수
+	retval = setsockopt(sock, SOL_SOCKET, SO_BROADCAST,
+		(char *)&bEnable, sizeof(bEnable));
+	if(retval == SOCKET_ERROR) err_quit("setsockopt()");
+
+
+
+
+ex)
+
+// 소켓 주소 구조체를 초기화한다.
+	SOCKADDR_IN remoteaddr;
+	ZeroMemory(&remoteaddr, sizeof(remoteaddr));
+	remoteaddr.sin_family = AF_INET;
+	remoteaddr.sin_addr.s_addr = inet_addr("255.255.255.255"); //ip주소를 전부 1로 채움, (=로컬 브로드캐스트 주소) 
+	// 같은 네트워크에있는 다른 구성원들에게 쏠때 이런식으로 함
+
+	remoteaddr.sin_port = htons(9000);
+// 송신용 버퍼를 선언하고 데이터를 넣는다.
+	char buf[BUFSIZE];
+	...
+// sendto() 함수로 데이터를 보낸다.
+	retval = sendto(sock, buf, strlen(buf), 0,
+	(SOCKADDR *)&remoteaddr, sizeof(remoteaddr));
+	if(retval == SOCKET_ERROR) 오류 처리;
+	printf("%d바이트를 보냈습니다.\n", retval);
+
+
+
+
+
+
+브로드캐스트 주소의 종류
+	네트워크, 서브넷, 지역
+
+
+
+
+
+
+

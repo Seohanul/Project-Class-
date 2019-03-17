@@ -1,0 +1,153 @@
+7장	UDP 서버 - 클라이언트
+
+TCP와 다른 부분을 중점적으로 보기
+
+
+
+
+TCP와 UDP의 공통점
+	포트번호를 이용해 주소를 지정
+
+	데이터 오류를 체크**
+		받은 데이터에 대한 오류체크를 함
+		오류 체크를 한 이후에 대응방법이 다름
+		TCP는 오류가 나면 재전송을 요구, 송신버퍼에 있는 내용을 재전송
+			잘 왔다고 확인해주면 그때서야 송신버퍼 내용 삭제
+
+		UDP는 오류가 나면 걍 버려버림
+			
+
+TCP와 UDP 차이점
+
+	연결 vs 비연결
+		connect 함수
+	신뢰성 유무
+
+	일대일 vs 일대일, 일대다
+
+	데이터 경계 구분여부
+		바이트 스트림(쪼개져 올 수 있음) vs 데이터 그램
+
+
+
+
+UDP의 특징
+	연결 설정을 하지 않으므로 connect() 불필요
+
+	프로토콜 수준에서 신뢰성 있는 데이터 전송을 보장하지 않음(운영체제가 안해준다는 얘기)
+	에플리케이션 레벨에서 프로그래머가 신뢰성 있는 데이터 전송 기능을 구현해야함
+
+	1대다 통신 쉽게 구현
+
+	데이터 경계 구분을 위한 작업을 별도로 할 필요가 없음
+
+
+
+
+UDP 서버 클라이언트 동작 원리
+
+	서버가 소켓하나 만들고 기다려야함 
+	연결 설정 없이 서버와 데이터 바로 수신
+
+	클라이언트가 소켓을 하나 만들고 데이터를 바로 보냄
+
+	소켓을 하나만 사용 (멀티스레드에 대한 걱정 x)
+	TCP는 전용소켓이 클라 정보를 받고 그 후 통신하지만
+	UDP에서는 데이터를 주고 받을때마다 누가 보내는지도 보내줘야함
+	sendto() recvfrom()
+
+
+
+
+UDP 서버- 클라이언트 상태
+1개 1개
+
+
+
+
+소켓 통신을 위해 결정해야 할 요소
+	TCP때랑 똑같음
+
+		1. 프로토콜
+		2. 로컬 IP, 로컬 포트
+		3. 원격 IP, 원격 포트
+
+
+
+소켓 데이터 구조체 
+	다 똑같은데 송신버퍼 주소가 없음
+	다시 보낼 필요가 없기 때문에
+	송신버퍼를 이용하지않고 운영체제의 레지스터 공간에 잠깐 있다가 보내기때문에 송신버퍼가 필요없음
+	수신버퍼는 필요 
+
+
+
+아주 드물게 UDP에서 connect를 부를때도 있음
+특수한 목적
+
+
+
+
+int sendto (
+	SOCKET s, // 소켓
+	const char *buf, // 보낼 데이터를 담고 있는 응용 프로그램 버퍼의 주소
+	int len, // 보낼 데이터 크기
+	int flags,	// 0 쓴다 일단 무시
+	const struct sockaddr *to, // 목적지 주소를 담고 있는 소켓 주소 구조체
+	int tolen // 목적지 주소를 담고 있는 소켓 주소 구조체의 크기
+) ;
+	
+	성공: 보낸 바이트 수, 실패: SOCKET_ERROR
+
+
+bind 함수의 역할도 같이 수행 (클라의 정보도 같이 보내줌)
+응용 프로그램의 데이터를 운영체제의 커널 영역에 복사함으로써 데이터를 전송 
+	이것도 보낸다고 바로 보낸건 아님 
+
+
+
+
+ex)
+
+// sendto() 함수로 데이터를 보낸다.
+	SOCKADDR_IN serveraddr;
+	~~
+
+	char buf[BUFSIZE];
+	~~
+
+	retval = sendto(sock, buf, strlen(buf), 0,
+		NULL, sizeof(serveraddr));
+	if(retval == SOCKET_ERROR) 오류 처리;
+	printf("%d바이트를 보냈습니다.\n", retval);
+
+
+
+
+
+int recvfrom (
+	SOCKET s,
+	char *buf, //받은 데이터를 저장할 응용 프로그램 버퍼의 주소
+	int len, // 응용 프로그램 버퍼의 크기
+	int flags,
+	struct sockaddr *from, // 소켓 주소 구조체를 전달하면 송신자의 IP와 포트로 채워짐
+	int *fromlen //정수형 변수를 from이 가리키는 소켓 주소 구조체의 기로 초기화한 후 전달
+) ;
+
+	성공: 받은 바이트 수, 실패: SOCKET_ERROR
+
+
+
+
+
+// 통신 상대의 주소를 저장하기 위한 변수를 선언한다.
+	SOCKADDR_IN peeraddr;
+	int addrlen;
+// 수신용 버퍼를 선언한다.
+	char buf[BUFSIZE];
+// recvfrom() 함수로 데이터를 받는다.
+	addrlen = sizeof(peeraddr);
+	retval = recvfrom(sock, buf, BUFSIZE, 0,
+	(SOCKADDR *)&peeraddr, &addrlen);
+	if(retval == SOCKET_ERROR) 오류 처리;
+	printf("%d바이트를 받았습니다.\n", retval);

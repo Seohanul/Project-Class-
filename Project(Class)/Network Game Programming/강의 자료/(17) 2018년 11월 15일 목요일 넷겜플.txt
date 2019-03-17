@@ -1,0 +1,83 @@
+cp10 입출력 소켓
+
+지난시간 select모델
+~~
+
+--------------------------------------------------------
+
+WSAAstncSelect모델
+
+	WSAAstncSelect() 함수가 핵심적인 역할
+
+	소켓과 관련된 네트워크 이벤트를 윈도우 메시지로 받음
+		모든 소켓과 관련된 메시지가 한 윈도우, 즉 한 윈도우 프로시저에 전달되므로
+		멀티스레드를 사용하지 않고도 여러 소켓을 처리 가능
+
+	윈도우가 없는 콘솔 프로그램은 사용불가. 즉 GUI 어플에서 사용
+
+
+
+메시지 큐에는 소켓 관련 메시지 + 윈도우 메시지 다 있음
+		그래서 하나로 다처리가능
+
+
+
+
+1. WSAAstncSelect () 함수 호출하여 소켓 이벤트를 알려줄 윈도우 메시지와 관심 있는 네트워크 이벤트를 등록
+
+2. 등록한 네트워크 이벤트가 발생하면 윈도우 메시지가 발생하여 윈도우 프로시저가 호출됨
+
+3. 윈도우 프로시저에서는 받은 메시지의 종류에 따라 적절한 소켓 함수를 호출하여 처리
+
+
+
+
+int WSAAsyncSelect (
+	SOCKET s, // 네트워크 이벤트를 처리하고자 하는 소켓
+	HWND hWnd, // 네트워크 이벤트가 발생하면 메시지를 받을 윈도우의 핸들
+	unsigned int wMsg, // 네트워크 이벤트가 발생하면 윈도우가 받을 메시지
+	long lEvent // 관심 있는 네트워크 이벤트를 비트 마스크 조합으로 나타냄
+) ;
+성공: 0, 실패: SOCKET_ERROR
+
+
+
+ex)
+
+#define WM_SOCKET (WM_USER+1) // 사용자 정의 윈도우 메시지
+
+WSAAsyncSelect(s, hWnd, WM_SOCKET, FD_READ|FD_WRITE);
+
+
+
+
+
+네트워크 이벤트 상수
+
+	FD_ACCEPT 	접속한 클라이언트가 있다.	accept()
+	FD_READ 	데이터 수신이 가능하다.		recv(), recvfrom()
+	FD_WRITE 	데이터 송신이 가능하다.		send(), sendto()
+	FD_CLOSE 	상대가 접속을 종료했다.
+	FD_CONNECT 	통신을 위한 연결 절차가 끝났다.
+	FD_OOB OOB 	데이터가 도착했다.		recv(), recvfrom()
+
+
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT msg,
+WPARAM wParam, LPARAM lParam)
+{
+....
+}
+	hwnd : 메시지가 발생한 윈도우의 핸들
+	
+	msg : WSAAsyncSelect() 함수 호출 시 등록했던 사용자 정의 메시지
+	
+	wParam : 네트워크 이벤트가 발생한 소켓
+	
+	lParam : 하위 16비트는 발생한 네트워크 이벤트 상위 16비트는 오류코드. 
+		오류코드를 먼저 확인한 후 네트워크 이벤트를 처리해야 함.
+
+
+
+
+

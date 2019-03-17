@@ -1,0 +1,132 @@
+소켓 옵션
+
+
+멀티캐스팅
+
+
+
+멀티캐스트 주소
+	클래스 D  1110 시작, 뒤 28비트
+			2의 28승개의 서로다른 멀티캐스팅 주소 가능
+			그룹에 가입하면 받을 수 있음
+		
+		멀티캐스트 데이터를 받으려면 그룹에 가입해야 함
+		멀티캐스트 데이터를 보내려고 그룹에 가입할 필요 없음.
+
+IPTV 사업자는 채널들을 서비스함
+	이런 채널들을 유니캐스팅으로 하면 가입자들마다 1대1로 보내줘야함
+	가입자가 늘어나면 늘어날수록 데이터량이 늘어남
+	멀티캐스트는 데이터를 하나만보냄
+	보려고하는 채널의 그룹ID에 가입만 하면됨
+
+
+
+
+_MULTICAST_IF 옵션
+
+
+IN_ADDR localaddr;
+localaddr.s_addr = inet_addr("147.46.114.70");
+setsockopt(sock, IPPROTO_IP, IP_MULTICAST_IF,
+(char *)&localaddr, sizeof(localaddr));
+
+
+
+
+MULTICAST_TTLor HOPS 옵션
+
+TTL 이라는 IP헤더안의 값 설정해주는거
+라우터 건널때마다 TTL -1
+0이되면 패킷 버려짐
+
+
+
+
+IP_MULTICAST_LOOP 옵션	
+	멀티 캐스트 데이터를 자기 자신도 받을껀지 결정
+
+
+// 자신이 보낸 멀티캐스트 데이터는 받지 않는다.
+BOOL optval = FALSE;
+setsockopt(sock, IPPROTO_IP, IP_MULTICAST_LOOP,
+(char *)&optval, sizeof(optval));
+
+
+
+
+
+**** 가입 탈퇴
+
+IPor IPV6_ADD_MEMBERSHIP,
+IPor IPV6_DROP_MEMBERSHIP 옵션 (1)
+
+옵션 값
+
+
+#include <ws2tcpip.h>
+
+
+typedef struct ip_mreq {
+	IN_ADDR imr_multiaddr; // IPv4 multicast address
+	IN_ADDR imr_interface; // Local IP address of interface
+} IP_MREQ;
+
+
+typedef struct ipv6_mreq {
+	IN6_ADDR ipv6mr_multiaddr; // IPv6 multicast address
+	ULONG ipv6mr_interface; // Interface index
+} IPV6_MREQ;
+
+
+
+
+struct ip_mreq mreq;
+mreq.imr_multiaddr.s_addr = inet_addr("235.7.8.9"); // IP
+mreq.imr_interface.s_addr = inet_addr("147.46.114.70"); // 로컬 IP
+setsockopt(sock, IPPROTO_IP, IP_ADD_MEMBERSHIP,
+(char *)&mreq, sizeof(mreq));
+
+
+
+
+
+
+
+*******중요
+
+TCP_NODELAY 옵션
+
+tcp에서만 가능
+
+
+ACK 이용하면 좋긴한데 느려
+
+효율적으로 하기위해 슬라이딩 윈도우 라는것을 이용
+
+윈도우크기 정해놓고 몇개 정도 한번에
+
+
+
+슬라이딩 윈도우라는걸 알고리즘으로 만든게 네이글 알고리즘
+
+이걸 사용할지말지 결정
+
+
+MSS 멕시멈 세그먼트 사이즈
+
+정의된 크기만큼 쌓이면 무조건 보내
+
+크기만큼 안쌓였는데 ACK 도착하면 걍 보내
+
+
+디폴트는 이 알고리즘을 사용하는거로함
+노딜레이 옵션을 쓰면 1대1로 한다는것을 말함
+즉 이 알고리즘을 사용 안한다는거지
+
+보낼 데이터의양이 너무 작아서 MSS가 안되니까 안보내는거 같은데?
+확인해보고 싶을때 노딜레이 옵션 사용해서 네이글알고리즘 끄고
+확인한번 해보는거임
+만약 데이터를 너무 잘게 쪼개서 보냈다면 이게 그럴 수 있음
+원인파악용으로 사용해야지 이걸 쓰라는게 아님 (네트워크 망 낭비심함)
+
+

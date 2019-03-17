@@ -1,0 +1,206 @@
+11장 입출력모델(2)
+
+
+
+동기 vs 비동기 입출력
+
+
+
+동기 입출력: 결과값이 오기 전까지 블럭킹 상태가 되며, 블럭킹 된 동안에는 다른 작업이 불가
+	ex) send를 호출하면 송신버퍼에 다 넣을때까지 기다림
+		다 작업을 끝내야 리턴함
+		
+
+비동기 입출력 : 입출력 요청 후에도 다른 작업이 가능(중첩 입출력 포함)하며, 오버헤드가 줄고 효율적임
+	ex) 운영체제에서 일단 return 해버림
+		다른 작업을 할 수 있고 운영체제는 따로 입출력 작업함
+
+10장에서 배운 소켓 입출력 모델은 동기 입출력 형태임
+
+
+
+
+
+
+
+동기 입출력
+
+	응용 프로그램은 입출력 함수를 호출한 후 입출력 작업이 끝날 때까지 대기
+	
+	입출력 작업이 끝나면 입출력 함수가 리턴하고 응용 프로그램은 입출력 결과를 처리하거나 다른 작업을 진행
+	
+	운영체제가 함수 호출 시점을 알려주는 개념을 비동기 통지(asynchronous notification)이라고 함.
+
+
+비동기 입출력 or 중첩 입출력
+
+	응용 프로그램은 입출력 함수를 호출한 후 입출력 작업의 완료 여부와 무관하게 다른 작업을 진행
+
+	입출력 작업이 끝나면 운영체제는 작업 완료를 응용 프로그램에 알려줌. 응용 프로그램은 하던 작업을 중단하고 입출력 결과를 처리
+
+	입출력 완료를 운영체제가 알려주는 개념이 반드시 필요하므로 비동기 통지도 사용
+
+
+
+
+
+
+
+동기 입출력 + 비동기 통지
+	Select 모델
+	WSAAsyncSelect 모델
+	WSAEventSelect 모델
+
+비동기 입출력 + 비동기 통지(언제 끝날지 알려주는 기능)
+	Overlapped 모델
+	Completion Port 모델 (IOCP)
+
+
+
+
+
+
+Overlapped 모델 사용 절차
+
+	1.비동기 입출력을 지원하는 소켓 생성
+		socket() 함수로 생성한 소켓은 기본적으로 비동기 입출력을 지원
+
+	2. 비동기 입출력을 지원하는 소켓 함수 호출
+		AcceptEx(), ConnectEx(), DisconnectEx(), TransmitFile(), TransmitPackets(), WSAIoctl(),
+		WSANSPIoctl(), WSAProviderConfigChange(), WSARecv(), WSARecvFrom(), WSARecvMsg(),
+		WSASend(), WSASendTo()
+
+	3. 운영체제가 입출력 작업 완료를 응용 프로그램에 알려주면(=비동기 통지), 응용 프로그램은 입출력 결과를 처리
+
+
+
+
+
+
+
+
+Overlapped 모델(I) 
+
+소켓 입출력 작업이 완료되면 운영체제는 응용 프로그램이 등록해둔 이벤트 객체를 신호 상태로 바꾼다. 
+응용 프로그램은 이벤트 객체를 관찰함으로써 입출력 작업 완료를 감지할 수 있다.
+
+
+Overlapped 모델(II) 
+
+소켓 입출력 작업이 완료되면 운영체제는 응용 프로그램이 등록해둔 함수를 자동으로 호출한다.
+일반적으로 운영체제가 호출하는 응용 프로그램 함수를 콜백 함수라 하는데 특별히 Overlapped 모델에서는 완료 루틴이라 부른다.
+
+
+
+
+int WSASend (
+	SOCKET s,
+	LPWSABUF lpBuffers,
+	DWORD dwBufferCount,
+	LPDWORD lpNumberOfBytesSent,
+	DWORD dwFlags,
+	LPWSAOVERLAPPED lpOverlapped,	// 구조체의 포인터
+	LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine		// 콜백 함수의 주소값
+) ;
+성공: 0, 실패: SOCKET_ERROR
+
+
+
+
+lpOverlapped: WSAOVERLAPPED 구조체(뒷장에 설명)의 포인터. 중첩된 출력이 아닌 경우 전달된 인자는 무시.
+lpCompletionRoutine: 전송연산이 완료되었을때 호출되는 전송 완료 루틴에 대한 포인터. 입출력 작업이 완료되면 운영체제가 자동으로 호출할 완료 루틴(콜백 함수)의 주소 값.
+
+Overlapped 모델(I)에서는 WSAOVERLAPPED 구조체의 hEvent 변수를, Overlapped 모델(II)에서는 lpCompletionRoutine 인자를 사용
+lpCompletionRoutine 인자의 우선순위가 높으므로 이 값이 NULL 이 아니면 WSAOVERLAPPED 구조체의 hEvent 변수는 사용되지 않음
+
+
+
+
+
+int WSARecv (
+	SOCKET s,
+	LPWSABUF lpBuffers,
+	DWORD dwBufferCount,
+	LPDWORD lpNumberOfBytesRecvd,
+	LPDWORD lpFlags,	
+	LPWSAOVERLAPPED lpOverlapped,
+	LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine
+) ;
+성공: 0, 실패: SOCKET_ERROR
+
+둘다 설정하면 콜백이 먼저불림 (이런 실수는 안해야함)
+
+
+
+
+
+
+
+typedef struct __WSABUF {
+	u_long len; // 길이(바이트 단위)
+	char FAR *buf; // 버퍼 시작 주소
+} WSABUF, *LPWSABUF;
+
+
+typedef struct _WSAOVERLAPPED {
+	DWORD Internal;
+	DWORD InternalHigh;
+	DWORD Offset;
+	DWORD OffsetHigh;
+	WSAEVENT hEvent; // 작업에 대한 이벤트 등록
+} WSAOVERLAPPED, *LPWSAOVERLAPPED;
+
+
+
+
+
+
+
+
+
+Overlapped 모델(I)을 이용한 소켓 입출력 절차
+	1. 비동기 입출력을 지원하는 소켓을 생성. 이때 WSACreateEvent() 함수를 호출하여 대응하는 이벤트 객체도 같이 생성
+
+	2. 비동기 입출력을 지원하는 소켓 함수를 호출. 이때 WSAOVERLAPPED 구조체의 hEvent 변수에 이벤트 객체의 핸들 값을 넣어서 전달
+
+	3. WSAWaitForMultipleEvents() 함수를 호출해 이벤트 객체가 신호 상태가 되기를 기다림
+	
+	4. 비동기 입출력 작업이 완료하여 WSAWaitForMultipleEvents() 함수가 리턴하면 WSAGetOverlappedResult() 함수를 호출해 비동기 입출력
+		결과를 확인하고 데이터를 처리
+	
+	5. 새로운 소켓을 생성하면 1~4를, 그렇지 않으면 2~4를 반복
+
+
+
+
+
+
+WSAGetOverlappedResult() 함수
+	매개 변수로 지정한 소켓에 대한 오버랩 연산의 결과를 반환
+	입출력이 성공 혹은 실패했는지, 성공했다면 몇 바이트나 입출력이 되었는지에 대한 결과를 확인
+
+
+
+
+BOOL WSAGetOverlappedResult (
+	SOCKET s,
+	LPWSAOVERLAPPED lpOverlapped,
+	LPDWORD lpcbTransfer,
+	BOOL fWait,
+	LPDWORD lpdwFlags
+) ;
+성공: TRUE, 실패: FALSE
+
+
+
+s: 소켓을 식별하는 기술자. 비동기 입출력 함수 호출에 사용했던 소켓을 넣음.
+lpOverlapped: 오버랩 연산이 시작될 때 지정된 WSAOVERAPPED 구조체에 대한 포인터
+lpcbTransfer: 이 변수를 통해 실제로 전송된 바이트를 얻음. 전송된 바이트 수가 여기에 저장
+fWait: 오버랩 연산을 완료하기 위해 대기할 것인지를 결정하는 플래그. 비동기 입출력 작업이 끝날때까지 대기하려면 TRUE, 그렇지 않으면 FALSE를 사용
+lpdwFlags: WSARecv 함수가 호출되었을 경우 부수적인 정보를 얻기 위해 사용. 거의 사용하지 않음
+
+
+
+
+
+

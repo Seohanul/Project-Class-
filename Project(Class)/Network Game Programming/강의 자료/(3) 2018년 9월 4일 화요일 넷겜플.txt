@@ -1,0 +1,180 @@
+2장 윈도우 소켓 시작하기
+
+
+
+오류 처리 유형
+	1. 오류를 처리할 필요가 없는경우
+		리턴이 없는 함수, 무조건 성공하는 함수
+
+	2. 리턴 값만으로 오류를 처리하는 경우
+		WSAStartup() 함수
+
+	3. 리턴 값으로 오류 발생을 확인하고, 구체적인 내용은 오류 코드로 확인 하는 경우
+		대부분의 소켓 함수
+		WSAGetLastError() 함수를 사용해 오류 코드를 얻을 수 있음.
+
+		MSDN가서 찾으면됨
+
+
+
+if(소켓함수() == 실패) {
+	int errcode =WSAGetLastError();
+	printf(MSDN에서 해당하는 오류 메시지);
+}
+
+
+* 오류메시지 출력
+FormatMessage() 함수
+
+ex))
+
+err_quit() 함수에서
+
+void err_quit(char*msg)
+{
+	LPVOID IpMsgBuf;
+	FormatMessage (
+		FORMAT_MESSAGE_ALLOCATE_BUFFER
+		| FORMAT_MESSAGE_FROM_SYSTEM,  // 인자 (운영체제로 부터 오류 메세지를 받아옴)
+		, NULL // 소스 운영체제에 시켰기 때문에
+		, WSAGetLastError() // 오류 코드 (오류 주는 함수 넣으면됨)
+		, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT) // 보고싶은 언어 (기본으로 되어있는 언어, 한글이라고 하드코딩 할 필요없음)
+		(LPTSTR)&IpMsgBuf// 문자열을 저장할 공간
+		,0 , NULL);
+
+	// 성공하면 오류메시지의 기본값이 리턴, 실패하면 0이 리턴
+	
+	MessageBox(NULL, (LPCTSTR)IpMsgBuf, msg, MB_ICONERROR);
+	LocalFree(IpMsgBuf);
+	exit(1);
+}
+
+
+
+err_quit() 함수 사용 예
+
+	if(socket(~) == INVALID_SOCKET) err_quit("socket()");
+	if(bind(~) == SOCKET_ERROR) err_quit("bind()");
+			이거는 함수마다 다름
+
+
+err_display는 exit만 없음
+
+
+
+
+윈속 버전 1.1, 2.2  2개 
+
+**윈속 초기화
+
+	윈속 응용 프로그램의 공통구조 (꼭 지켜야함)
+		1. 윈속 초기화
+		2. 소켓 생성 
+		3. 네트워크 통신
+		4. 소켓 닫기
+		5. 윈속 종료
+
+
+
+	* 윈속 초기화
+		WSAStartup( 윈속 버전, 안쓰임 );
+			   WORD 2바이트
+
+		하위 8비트에 주 버전을 , 상위 8비트에 부 버전을 넣어서 전달.
+		예) MAKEWORD(2,2)
+
+
+
+	*소켓 생성
+
+		SOCKET socket(
+			int af 	// 주소 체계 address format
+			int type // 소켓 타입
+			int protocol // 프로토콜
+		);
+
+		사용자가 요청한 프로토콜을 사용해 통신할 수 있도록 내부적으로 리소스를 할당하고,
+		이에 접근할 수 있는 일종의 핸들 값(소켓 타입, 32비트 정수)인 소켓 디스크립터(socket descriptor)를 리턴
+
+		소켓만들때 프로토콜을 정하기 때문에 다시하려면 처음부터 다시해야함
+
+		통상적으로 소켓하나 만들때 메모리에서 1바이트 할당
+
+		TCP에서는 클라이언트가 1000개 접속요청하면 1000+1개의 소켓이 생성
+
+		클라이언트가 연결 끊을때마다 소켓을 해제해줘야함
+
+		
+	* 주소체계 (소켓 생성 첫번째 인자)
+	
+		#define AF_INET 2  // internetwork : UDP,TCP, etc.  IPv4임.
+
+		~
+
+	
+	* 소켓 타입	
+		SOCK_STREAM  -> TCP
+
+		SOCK_DGRAM   -> UDP
+
+	* 프로토콜
+
+		IPPROTO_TCP
+
+		IPPROTO_UDP
+
+		둘다 디파인 값이 0이라 0넣어도 되긴함
+
+		굳이 3번째 인자로 따로 만들었나? 
+			TCP UDP말고도 다른 프로토콜이 있기 때문에
+
+
+	* 소켓 닫기
+
+		int closesocket (
+			SOCKET s
+		);
+		성공 0, 실패: SOCKET_ERROR
+		
+
+
+
+
+
+*** 중요
+
+WORD 는 2바이트 인데
+
+MAKEWORD해주면
+앞 8비트가 (왼쪽, 부) 뒤 8비트가 (오른쪽, 주) 
+하위비트(왼쪽)에 부가 들어가고 상위비트(오른쪽)에 주가 들어감				상위비트
+
+
+http://orang.tistory.com/entry/64비트-주소를-상위-32하위-32비트로-나누어-표현
+
+
+MAKEWORD는 반대로 넣어줌 
+
+WSAStartup() 함수는 인자로 WORD wVersionRequested를 받는데
+	반대로 넣어줘야함 그걸 MAKEWORD가 해줌
+	즉, MAKEWORD(주, 부) 하면 
+	2진수로 바꾸면 부, 주 가 됨 
+	
+
+이걸 이제 버전을 받아올때 
+상위 하위를 받아와야하는데 이것도 매크로가 있음
+
+LOBYTE 는  ((BYTE)(((DWORD_PTR)(w)) & 0xff)) 로 그냥 상위비트(오른쪽) 받아오는거임
+
+HIBYTE 는 ((BYTE)((((DWORD_PTR)(w)) >> 8) & 0xff)) 로 하위비트(왼쪽)을 받아오는거임
+
+MAKEWORD로 부, 주 가 들어갔으니 하위비트-> 부 상위비트 -> 주 그대로감
+
+그러니 MAKEWORD(2,1)을 넣었다 하면 WORD에는 이진법으로 00000001 00000010   (1,2) 처럼 들어가고 
+
+그러니 뺄때도 상위비트가 주가 되는거고 하위비트가 부가 되는거임
+
+
+또, 버전 차이에 대한것도 있는데 이건 링크
+
+http://icoder.tistory.com/33?srchid=BR1http%3A%2F%2Ficoder.tistory.com%2F33
