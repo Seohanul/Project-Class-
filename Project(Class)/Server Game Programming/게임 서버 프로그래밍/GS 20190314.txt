@@ -1,0 +1,357 @@
+
+
+Windows I/O 모델
+
+
+	I/O 모델이 필요한 이유
+		- 비규칙적인 입출력 관리
+		- 다중 접속 관리
+
+
+FPS에서 하던 방식으로는 MMO에서는 못함
+FPS에서는 규칙적으로 데이터 (서버 ->클라) 보냄
+
+
+
+	게임 서버의 접속
+		정해지지 않은 동작 순서
+			클라이언트가 서버에 데이터를 보낼 수도 있고 아닐 수도 있음
+			멈추지는 않아야함
+
+		수 천 개의 접속
+		상대적으로 낮은 접속당 bandwidth
+			효율적 자원관리 필요
+				cpu,메모리,망
+
+
+
+
+
+방법들 중 하나를 선택해서 해야함
+
+
+
+
+1. Socket Thread
+
+	Thread를 통한 처리 (소켓 하나당 쓰레드 하나)
+	불규칙한거 해결됨
+	다중 접속 해결됨
+
+
+	But, 과도한 thread 개수로 인한 운영체제 오버헤드
+	스레드별로 돌아다니면서 context switch 하느라 오버헤드 
+	메모리를 많이 잡아먹음. Stack을 잡을때 1MB의 빈공간을 잡아야하고
+	동접 5천이면 5G의 빈공간을 잡아먹음
+	캐시에 안들어가므로 캐시미스 -> 성능저하
+
+
+	성능때문에 못쓴다.
+	그리고 recv는 멈춰있음. 어떤 클라한테 받아야하나도 모름
+
+2. Non-blocking I/O
+	Socket 모드를 non-blocking으로 변환.
+	올때까지 기다리지 않음
+	WSAEWOULDBLOCK 에러를 내고 끝난다.
+
+	Busy Waiting
+		recv를 계속 반복 체크해야함
+		cpu낭비 -> 성능 저하
+		시스템 콜이므로 오래걸림
+
+
+	성능안나옴 안씀
+
+
+3. Select
+	Select(A,B)
+	if(A ok?)
+		recv(A)
+	if(B ok?)
+		recv(B)
+
+
+	readfds writefds 
+		소켓 집합 포인터들
+
+		준비가 된것들 마킹해서 알려줌
+
+	timeout 0으로 해야 게임이 안멈춤
+
+	socket 갯수의 한계 존재
+		unix :64 ,  linux : 1024
+	
+	Socket의 개수가 많아 질수록 성능 저하 증가.
+		- linear search O(n)
+			5000 동접이면 5000개 배열에서 하나하나 검사해야함
+
+
+	성능 안나옴
+	배그나 오버워치 같은건 상관x
+	MMO의 경우만
+
+
+
+
+
+
+4. WSAAsyncSelect
+
+	위에꺼가 동기식 Select였다면 (모든 소켓을 동시에 검사하므로)
+	
+	이거는 비동기식 Select
+
+	이 함수 호출하면 소켓이 커널에 등록
+
+	소켓 이벤트를 특정 윈도우의 메시지로 받는다.
+
+	패킷이 올때마다 메세지 날라오니까 거기서 처리하면 됨
+
+	클라이언트 만들때는 이거로만 충분함
+
+	서버는 윈도우 만들지 않음. (윈도우 자체가 오버헤드)
+
+	클라이언트에서만 사용
+
+	Event에 case 나눠서 처리하면됨
+
+
+
+
+
+5. WSAEventSelect
+
+	윈도우 필요없이 사용가능
+
+	호출하면 커널에 소켓 등록
+
+	이거는 메세지 아니고 EventObject로 알려줌 (일종의 세마포어)
+	
+	socket과 event의 배열을 만들어서
+
+	WSAWaitForMultipleEvents() 에다 보내면
+	
+	하나라도 리턴하면 깨어나고, 어느 소켓에서 보낸건지 확인 가능
+
+	소켓의 개수 64개 제한 
+		쓰레드 100개 만들면 가능하지만 오버헤드
+			
+
+
+
+
+여태까지 쓸모있는애가 없었음 (다 동기식 I/O 였음)
+
+
+
+6. Overlapped I/O 모델
+
+	Windows 에서 추가된 고성능 I/O 모델  (IOCP, RIO)
+
+	제대로된 이름은 Asynchronous I/O  비동기 I/O
+
+	c++20부터는 asIO가 표준이 될거임
+
+	리눅스의 경우 boost/asio 라이브러리 사용가능 (하지만 똑같은거임) IOCP는 이거로 안됨..
+
+	대용량 고성능 네트워크 서버를 위해서는 필수 기능
+
+	동기와 비동기는 사용방법이 다름
+
+
+
+
+
+	동기식 IO는 
+		메인루프 돌면서 패킷이 날아오는대로 받아서 처리함
+		select (~); // 패킷이 도착한 소켓의 리스트 리턴
+		for( ready_sockets)
+			recv
+			패킷처리
+
+	
+
+	비동기식 IO는
+		for (all socket)
+			recv(socket[i], buf[i])  // 패킷이 온애가 있으면 버퍼에 저장해둬라
+
+		while(1) {
+			i = wait_for_recv_complete_socket(); // recv가 끝난 애가 있으면 알려줌 // 버퍼에 데이터가 차있으면  // 즉, recv가 끝났는지를 알려주는거
+			패킷 처리 for i;  // 버퍼에 데이터가 있다는 얘기니까 처리하고 recv 다시
+			recv
+		}
+		
+
+???
+				
+	
+		
+
+	
+동기 recv .......... 기다리다가 패킷오면 리턴. 패킷처리
+ 	기다리기 싫으니까 select로 도착한애만 recv하려고함
+
+
+비동기 recv하고 바로 리턴, 기다리는동안 다른 작업 하고 callback 으로 불러줌
+	버퍼가 비어있다가
+	콜백쪽에서 버퍼 채우고 패킷 처리
+
+
+	버퍼들을 커널에 한번에 등록하므로 전송속도가 빠르고
+	메모리를 덜 사용함
+	
+
+	동기식은 커널에다 받고 버퍼에다 복사하는건데
+
+	비동식은 버퍼 자체가 커널에 있으니까 그냥 가져다 쓰면 됨
+
+	소켓 내부 버퍼를 사용하지 않고 직접 사용자 버퍼에서 데이터를 보내고 받을 수 있다. (옵션)
+
+
+
+
+
+
+비동기랑 Non-blocking이랑 차이는?
+	- 앞의 다중 I/O 모델들은 recv와 send의 가능 여부만 비동기
+	- Overlapped 는 아예 여러 소켓으리 send, recv 실행 자체를 동시에 수행
+
+
+
+Overlapped I/O모델
+
+
+	send recv호출시 완료 안기다리고 함수 종료
+	이때 이것은 send recv의 시작을 지시하는 ㄹ함수임
+
+
+	동기는 recv를 여러개 하고싶으면 하나가 끝날때까지 기다려야함
+	비동기는 실행시켜놓고 다른일 하니까 동시 다발적 recv send가 가능
+	하나의 socket은 하나의 recv만 가능 
+
+
+
+
+
+소켓만들때 Flag를 WSA_FLAG_OVERLAPPED 로 해주면 Overlapped I/O로 사용 가능
+
+
+
+recv도 파라미터로 구분
+
+	lpNumberofBytesRecvd 는 null로 해줘야함
+		만약 숫자가 있으면 동기로 간주해버림
+
+	LPWSAOVERLAPPED_COMPLETION_ROUTINE 콜백인데 null 주면됨
+		- 콜백쓰고 싶으면 함수 포인터 주면되긴함
+
+
+	lpOverlapped에다 null 대신 값을 주면 동작
+		
+	LPWSAOVERLAPPED 포인터를 줘야하는데 이 구조체는
+
+	windows.h에 있음 사용하면됨
+
+	구조체 하나 만들어서 이거의 주소를 넣어주면 됨
+
+	파라미터는 DWORD 값들은 0,0,0,0 주고
+	
+	event에는 I/O가 완료되었음을 알려주는 event 핸들 넣어줘야함 (세마포어)
+
+	
+	
+
+
+	두 가지 방법
+		Overlapped I/O Event 모델
+		Overlapped I/O Callback 모델
+
+
+
+	
+
+
+Overlapped I/O Event 모델
+1. WSACreateEvent()를 사용해서 이벤트 생성
+2. WSAOVERLAPPED구조체 변수선언 0으로 초기화
+	hEvent에 1의 이벤트
+3. WSASend(), WSARecv()
+	2의 구조체를 WSAOVERLAPPED에
+		중복 사용 불가능!! 호출 완료 후 재사용
+	lpCompletionROUTINE에 NULL
+4. WSAWaitForMultipleEvents()함수로 이벤트 감지
+5. WSAGetOverlappedResult()함수로 이벤트완료 확인
+
+
+
+
+
+64명 제한이 있기때문에 못씀
+
+그래서 callback 모델을 씀
+
+	- event 제한 개수 없음
+	- 사용하기 편리
+
+
+
+
+WSARecv와 WSASend의
+LPWSAOVERLAPPED_COMPLETION_ROUTINE 에다가 null 안넣고
+lpCompletionRoutine 함수 사용 (함수 포인터)
+
+
+
+Overlapped I/O가 끝난후 lpCompletionRoutine이
+호출됨 (패킷 처리)
+
+
+콜백함수 (이름은 상관 x CALLBACK 넣어줘야함)
+
+void CALLBACK CompletionROUTINE(
+	DWORD dwError,
+	DWORD cbTransferred,
+	LPWSAOVERLAPPED lpOverlapped,
+	DWORD dwFlags
+);
+
+
+
+버퍼가 없다. 소켓을 알면 버퍼도 알 수 있다!
+어떤 소켓에 대한 건지에 대한 정보도 없음.
+
+관심법 써야함
+
+3번째 인자를 통해서 알아내야함 
+주소를 가지고 어떤 소켓인지 알아맞춰야함
+Map으로 만들어서 소켓 정보를 해놔야함
+
+
+실습은 다음주에 `
+예제 프로그램 :
+http://myblog.opendocs.co.kr/archives/1204
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
