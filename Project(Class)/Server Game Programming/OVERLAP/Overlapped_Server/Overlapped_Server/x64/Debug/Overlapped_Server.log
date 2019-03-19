@@ -1,0 +1,6 @@
+﻿  server_main.cpp
+c:\users\seo\desktop\overlap\overlapped_server\overlapped_server\server_main.cpp(149): warning C4311: 'reinterpret_cast': 'HANDLE'에서 'int'(으)로 포인터가 잘립니다.
+c:\users\seo\desktop\overlap\overlapped_server\overlapped_server\server_main.cpp(149): warning C4302: 'reinterpret_cast': 'HANDLE'에서 'int'(으)로 잘립니다.
+c:\users\seo\desktop\overlap\overlapped_server\overlapped_server\server_main.cpp(188): warning C4311: 'reinterpret_cast': 'HANDLE'에서 'int'(으)로 포인터가 잘립니다.
+c:\users\seo\desktop\overlap\overlapped_server\overlapped_server\server_main.cpp(188): warning C4302: 'reinterpret_cast': 'HANDLE'에서 'int'(으)로 잘립니다.
+  Overlapped_Server.vcxproj -> C:\Users\seo\Desktop\OVERLAP\Overlapped_Server\x64\Debug\Overlapped_Server.exe
