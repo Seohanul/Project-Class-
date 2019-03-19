@@ -1,4 +1,12 @@
+
+#pragma comment(lib, "ws2_32")
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+#include <winsock2.h>
 #include "GL/glut.h"
+
+
+#include <stdlib.h>
+
 #include <iostream>
 #include <random>
 #include <time.h>
@@ -7,6 +15,12 @@
 
 #define Pi 3.141592
 #define BOARD_SCALE 50
+
+
+#define SERVERIP   "127.0.0.1"
+#define SERVERPORT 9000
+#define BUFSIZE    50
+
 using namespace std;
 
 
@@ -16,6 +30,17 @@ void Keyboard(unsigned char key, int x, int y);
 void specialKey(int key, int x, int y);
 void TimerFunction(int value);
 GLvoid drawScene(GLvoid);
+void err_quit(char *msg);
+void err_display(char *msg);
+
+
+enum Key
+{
+	UP = 1,
+	DOWN,
+	LEFT,
+	RIGHT
+};
 
 typedef struct pos
 {
@@ -37,29 +62,11 @@ public:
 		CurrentLocation.z = 0;
 	}
 
-	void MoveFoward()
-	{
-		if(CurrentLocation.y < BOARD_SCALE * 4)
-			CurrentLocation.y += BOARD_SCALE;
-	}
 
-	void MoveBack()
+	void SetCurrentLocation(Pos &p)
 	{
-		if (CurrentLocation.y > BOARD_SCALE * -3)
-			CurrentLocation.y -= BOARD_SCALE;
+		CurrentLocation = p;
 	}
-	void MoveRight()
-	{
-		if (CurrentLocation.x < BOARD_SCALE * 3)
-			CurrentLocation.x += BOARD_SCALE;
-	}
-	void MoveLeft()
-	{
-		if (CurrentLocation.x > BOARD_SCALE * -4)
-			CurrentLocation.x -= BOARD_SCALE;
-	}
-
-
 
 	void Draw()
 	{
@@ -72,10 +79,35 @@ public:
 
 };
 
-Pawn P;
 
-void main(int argc, char *argv[])
+
+
+Pawn MyCharater;
+SOCKET sock;
+int main(int argc, char *argv[])
 {
+	int retval;
+
+	// 윈속 초기화
+	WSADATA wsa;
+	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+		return 1;
+
+	// socket()
+	sock = socket(AF_INET, SOCK_STREAM, 0);
+	if (sock == INVALID_SOCKET) err_quit("socket()");
+
+	// connect()
+	SOCKADDR_IN serveraddr;
+	ZeroMemory(&serveraddr, sizeof(serveraddr));
+	serveraddr.sin_family = AF_INET;
+	serveraddr.sin_addr.s_addr = inet_addr(SERVERIP);
+	serveraddr.sin_port = htons(SERVERPORT);
+	retval = connect(sock, (SOCKADDR *)&serveraddr, sizeof(serveraddr));
+	if (retval == SOCKET_ERROR) err_quit("connect()");
+
+
+
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA); // 디스플레이 모드 설정 
 	glutInitWindowPosition(100, 100); // 윈도우의 위치지정 
@@ -92,6 +124,13 @@ void main(int argc, char *argv[])
 
 	glutReshapeFunc(Reshape);
 	glutMainLoop();
+
+	// closesocket()
+	closesocket(sock);
+
+	// 윈속 종료
+	WSACleanup();
+
 }
 
 
@@ -120,7 +159,7 @@ void drawBoard()
 	glColor3f(0.7, 0.1, 0.2);
 	glRotatef(-180.0, 1.0, 0.0, 0.0);
 	glTranslatef(200.0, 200.0, 50.0);
-	P.Draw();
+	MyCharater.Draw();
 	glPopMatrix(); //%%
 	glPopMatrix();
 }
@@ -180,34 +219,57 @@ void Keyboard(unsigned char key, int x, int y)
 }
 void specialKey(int key, int x, int y)
 {
+	int retval = 0;
+	int input = 0;
+	Pos position = {};
 	switch (key)
 	{
 	case GLUT_KEY_LEFT:
 	{
-		P.MoveLeft();
+		input = LEFT;
+		retval = send(sock, (char *)&input, sizeof(int), 0);
+		retval = recv(sock, (char *)&position, sizeof(Pos), 0);
+
+		MyCharater.SetCurrentLocation(position);
+		//P.MoveLeft();
 			
 		
 		break;
 	}
 	case GLUT_KEY_RIGHT:
 	{
-		
-		P.MoveRight();
+		input = RIGHT;
+		retval = send(sock, (char *)&input, sizeof(int), 0);
+		retval = recv(sock, (char *)&position, sizeof(Pos), 0);
+
+		MyCharater.SetCurrentLocation(position);
+
+		//P.MoveRight();
 			
 		
 		break;
 	}
 	case GLUT_KEY_DOWN:
 	{
+		input = DOWN;
+		retval = send(sock, (char *)&input, sizeof(int), 0);
+		retval = recv(sock, (char *)&position, sizeof(Pos), 0);
 
-		P.MoveBack();
+		MyCharater.SetCurrentLocation(position);
+
+		//P.MoveBack();
 		
 		break;
 	}
 	case GLUT_KEY_UP:
 	{
-	
-		P.MoveFoward();
+		input = UP;
+		retval = send(sock, (char *)&input, sizeof(int), 0);
+		retval = recv(sock, (char *)&position, sizeof(Pos), 0);
+
+		MyCharater.SetCurrentLocation(position);
+
+		//P.MoveFoward();
 		break;
 	}
 	default:
@@ -241,3 +303,28 @@ void Mouse(int button, int state, int x, int y)
 
 
 
+void err_quit(char *msg)
+{
+	LPVOID lpMsgBuf;
+	FormatMessage(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+		NULL, WSAGetLastError(),
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		(LPTSTR)&lpMsgBuf, 0, NULL);
+	MessageBox(NULL, (LPCTSTR)lpMsgBuf, msg, MB_ICONERROR);
+	LocalFree(lpMsgBuf);
+	exit(1);
+}
+
+// 소켓 함수 오류 출력
+void err_display(char *msg)
+{
+	LPVOID lpMsgBuf;
+	FormatMessage(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+		NULL, WSAGetLastError(),
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		(LPTSTR)&lpMsgBuf, 0, NULL);
+	printf("[%s] %s", msg, (char *)lpMsgBuf);
+	LocalFree(lpMsgBuf);
+}
