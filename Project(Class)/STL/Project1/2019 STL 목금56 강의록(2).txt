@@ -1,0 +1,1654 @@
+
+
+=========================================
+Thu Mar 14 13:50:51 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+
+#include <random>
+using namespace std;
+int a[100];
+//int a[1000000] {1}; // 이렇게하면 완전히 다른얘기가됨  위에꺼랑 이유 찾아보기 
+
+
+
+int main()
+{
+	// 정수 1000000개를 정렬해보자
+
+	default_random_engine dre;
+	uniform_int_distribution<> uid(0,1000);
+
+	for (int& d : a)
+		d = uid(dre);
+	//슈도 랜덤 (진짜 렌덤은 아님)
+
+
+
+
+	sort(begin(a), end(a));
+
+	for (int d : a)
+		cout << d << ' ';
+	cout << endl;
+
+
+
+	save("소스.cpp");
+}
+
+
+
+=========================================
+Thu Mar 14 13:58:08 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+
+#include <random>
+using namespace std;
+
+// 전역 데이터는 실행 파일의 (어디에)(어떻게) 기록되는가
+//int a[100];
+//int a[100] {1}; // 이렇게하면 완전히 다른얘기가됨  위에꺼랑 이유 찾아보기 
+
+// 위 두 방식의 차이점을 설명해 보자. ** 찾아봐야함 **
+
+int a[100'0000];
+
+
+int main()
+{
+	// 정수 1000000개를 정렬해보자
+
+	default_random_engine dre;
+	uniform_int_distribution<> uid(0,10000);
+
+	for (int& d : a)
+		d = uid(dre);
+	//슈도 랜덤 (진짜 렌덤은 아님)
+
+
+	cout << "정렬 전 100개" << endl;
+
+	for (int i = 0; i < 100; ++i)
+		cout << a[i];
+	cout << endl << endl;
+
+
+	sort(begin(a), end(a));
+
+	cout << "정렬 후 100개" << endl;
+
+	for (int i = 0; i < 100; ++i)
+		cout << a[i];
+	cout << endl;
+	/*for (int d : a)
+		cout << d << ' ';
+	cout << endl;
+*/
+
+
+	save("소스.cpp");
+}
+
+
+
+=========================================
+Thu Mar 14 13:58:36 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+
+#include <random>
+using namespace std;
+
+// 전역 데이터는 실행 파일의 (어디에)(어떻게) 기록되는가
+//int a[100];
+//int a[100] {1}; // 이렇게하면 완전히 다른얘기가됨  위에꺼랑 이유 찾아보기 
+
+// 위 두 방식의 차이점을 설명해 보자. ** 찾아봐야함 **
+
+int a[100'0000];
+
+
+int main()
+{
+	// 정수 1000000개를 정렬해보자
+
+	default_random_engine dre;
+	uniform_int_distribution<> uid(0,10000);
+
+	for (int& d : a)
+		d = uid(dre);
+	//슈도 랜덤 (진짜 렌덤은 아님)
+
+
+	cout << "정렬 전 100개" << endl;
+
+	for (int i = 0; i < 100; ++i)
+		cout << a[i] << ' ';
+	cout << endl << endl;
+
+
+	sort(begin(a), end(a));
+
+	cout << "정렬 후 100개" << endl;
+
+	for (int i = 0; i < 100; ++i)
+		cout << a[i] << ' ';
+	cout << endl;
+	/*for (int d : a)
+		cout << d << ' ';
+	cout << endl;
+*/
+
+
+	save("소스.cpp");
+}
+
+
+
+=========================================
+Thu Mar 14 14:00:03 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+using namespace std;
+
+// 전역 데이터는 실행 파일의 (어디에)(어떻게) 기록되는가
+//int a[100];
+//int a[100] {1}; // 이렇게하면 완전히 다른얘기가됨  위에꺼랑 이유 찾아보기 
+
+// 위 두 방식의 차이점을 설명해 보자. ** 찾아봐야함 **
+
+int a[100'0000];
+
+
+int main()
+{
+	// 정수 1000000개를 정렬해보자
+
+	default_random_engine dre;
+	uniform_int_distribution<> uid(0,10000);
+
+	for (int& d : a)
+		d = uid(dre);
+	//슈도 랜덤 (진짜 렌덤은 아님)
+
+
+	cout << "정렬 전 100개" << endl;
+
+	for (int i = 0; i < 100; ++i)
+		cout <<setw(12)<< a[i] << ' ';
+	cout << endl << endl;
+
+
+	sort(begin(a), end(a));
+
+	cout << "정렬 후 100개" << endl;
+
+	for (int i = 0; i < 100; ++i)
+		cout << a[i] << ' ';
+	cout << endl;
+	/*for (int d : a)
+		cout << d << ' ';
+	cout << endl;
+*/
+
+
+	save("소스.cpp");
+}
+
+
+
+=========================================
+Thu Mar 14 14:00:46 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+using namespace std;
+
+// 전역 데이터는 실행 파일의 (어디에)(어떻게) 기록되는가
+//int a[100];
+//int a[100] {1}; // 이렇게하면 완전히 다른얘기가됨  위에꺼랑 이유 찾아보기 
+
+// 위 두 방식의 차이점을 설명해 보자. ** 찾아봐야함 **
+
+int a[100'0000];
+
+
+int main()
+{
+	// 정수 1000000개를 정렬해보자
+
+	default_random_engine dre;
+	uniform_int_distribution<> uid(0,10000);
+
+	for (int& d : a)
+		d = uid(dre);
+	//슈도 랜덤 (진짜 렌덤은 아님)
+
+
+	cout << "정렬 전 100개" << endl;
+
+	for (int i = 0; i < 100; ++i) {
+		cout << setw(12) << a[i] << ' ';
+		if (i % 6)
+			cout << endl;
+	}
+	cout << endl << endl;
+
+
+	sort(begin(a), end(a));
+
+	cout << "정렬 후 100개" << endl;
+
+	for (int i = 0; i < 100; ++i) {
+		cout << setw(12) << a[i] << ' ';
+		if (i % 6)
+			cout << endl;
+	}
+	cout << endl;
+	/*for (int d : a)
+		cout << d << ' ';
+	cout << endl;
+*/
+
+
+	save("소스.cpp");
+}
+
+
+
+=========================================
+Thu Mar 14 14:01:16 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+using namespace std;
+
+// 전역 데이터는 실행 파일의 (어디에)(어떻게) 기록되는가
+//int a[100];
+//int a[100] {1}; // 이렇게하면 완전히 다른얘기가됨  위에꺼랑 이유 찾아보기 
+
+// 위 두 방식의 차이점을 설명해 보자. ** 찾아봐야함 **
+
+int a[100'0000];
+
+
+int main()
+{
+	// 정수 1000000개를 정렬해보자
+
+	default_random_engine dre;
+	uniform_int_distribution<> uid(1000,10000);
+
+	for (int& d : a)
+		d = uid(dre);
+	//슈도 랜덤 (진짜 렌덤은 아님)
+
+
+	cout << "정렬 전 100개" << endl;
+
+	for (int i = 0; i < 100; ++i) {
+		cout << setw(12) << a[i] << ' ';
+		if (i % 6)
+			cout << endl;
+	}
+	cout << endl << endl;
+
+
+	sort(begin(a), end(a));
+
+	cout << "정렬 후 100개" << endl;
+
+	for (int i = 0; i < 100; ++i) {
+		cout << setw(12) << a[i] << ' ';
+		if (i % 6)
+			cout << endl;
+	}
+	cout << endl;
+	/*for (int d : a)
+		cout << d << ' ';
+	cout << endl;
+*/
+
+
+	save("소스.cpp");
+}
+
+
+
+=========================================
+Thu Mar 14 14:01:48 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+using namespace std;
+
+// 전역 데이터는 실행 파일의 (어디에)(어떻게) 기록되는가
+//int a[100];
+//int a[100] {1}; // 이렇게하면 완전히 다른얘기가됨  위에꺼랑 이유 찾아보기 
+
+// 위 두 방식의 차이점을 설명해 보자. ** 찾아봐야함 **
+
+int a[100'0000];
+
+
+int main()
+{
+	// 정수 1000000개를 정렬해보자
+
+	default_random_engine dre;
+	uniform_int_distribution<> uid(1000,10000);
+
+	for (int& d : a)
+		d = uid(dre);
+	//슈도 랜덤 (진짜 렌덤은 아님)
+
+
+	cout << "정렬 전 100개" << endl;
+
+	for (int i = 0; i < 100; ++i) {
+		cout << setw(12) << a[i] << ' ';
+		if (i % 6 == 0)
+			cout << endl;
+	}
+	cout << endl << endl;
+
+
+	sort(begin(a), end(a));
+
+	cout << "정렬 후 100개" << endl;
+
+	for (int i = 0; i < 100; ++i) {
+		cout << setw(12) << a[i] << ' ';
+		if (i % 6 == 0)
+			cout << endl;
+	}
+	cout << endl;
+	/*for (int d : a)
+		cout << d << ' ';
+	cout << endl;
+*/
+
+
+	save("소스.cpp");
+}
+
+
+
+=========================================
+Thu Mar 14 14:02:27 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+using namespace std;
+
+// 전역 데이터는 실행 파일의 (어디에)(어떻게) 기록되는가
+//int a[100];
+//int a[100] {1}; // 이렇게하면 완전히 다른얘기가됨  위에꺼랑 이유 찾아보기 
+
+// 위 두 방식의 차이점을 설명해 보자. ** 찾아봐야함 **
+
+int a[100'0000];
+
+
+int main()
+{
+	// 정수 1000000개를 정렬해보자
+
+	default_random_engine dre;
+	uniform_int_distribution<> uid;
+
+	for (int& d : a)
+		d = uid(dre);
+	//슈도 랜덤 (진짜 렌덤은 아님)
+
+
+	cout << "정렬 전 100개" << endl;
+
+	for (int i = 0; i < 100; ++i) {
+		cout << setw(12) << a[i] << ' ';
+		if (i % 6 == 0)
+			cout << endl;
+	}
+	cout << endl << endl;
+
+
+	sort(begin(a), end(a));
+
+	cout << "정렬 후 100개" << endl;
+
+	for (int i = 0; i < 100; ++i) {
+		cout << setw(12) << a[i] << ' ';
+		if (i % 6 == 0)
+			cout << endl;
+	}
+	cout << endl;
+	/*for (int d : a)
+		cout << d << ' ';
+	cout << endl;
+*/
+
+
+	save("소스.cpp");
+}
+
+
+
+=========================================
+Thu Mar 14 14:10:22 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+using namespace std;
+
+// 전역 데이터는 실행 파일의 (어디에)(어떻게) 기록되는가
+//int a[100];
+//int a[100] {1}; // 이렇게하면 완전히 다른얘기가됨  위에꺼랑 이유 찾아보기 
+
+// 위 두 방식의 차이점을 설명해 보자. ** 찾아봐야함 **
+
+
+
+// 사용자가 원하는 만큼 정수를 입력 받는다
+// 임의의 값으로 채운다, uid(dre) 이용
+// 오름 차순 정렬한다.
+
+int main()
+{
+	int num = 0;
+	cout << "원하는 정수의 갯수를 입력하세요 : ";
+	cin >> num;
+
+	default_random_engine dre;
+	uniform_int_distribution<> uid;
+
+	int* a = new int[num];
+
+	for (int i = 0; i < num; ++i)
+		a[i] = uid(dre);
+
+	cout << "정렬 전 100개" << endl;
+
+	for (int i = 0; i < 100; ++i) {
+		cout << setw(12) << a[i] << ' ';
+		if (i % 6 == 0)
+			cout << endl;
+	}
+	cout << endl << endl;
+
+	sort(a, a+num);
+
+//	sort(&a[0], &a[num]);
+
+	cout << "정렬 후 100개" << endl;
+
+	for (int i = 0; i < 100; ++i) {
+		cout << setw(12) << a[i] << ' ';
+		if (i % 6 == 0)
+			cout << endl;
+	}
+	cout << endl;
+	
+
+	save("소스.cpp");
+}
+
+
+
+=========================================
+Thu Mar 14 14:39:09 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 정수 만개를 생성하고 랜덤값을 설정하고 정렬한 후
+// 파일 "정수만개.dat"에 기록하라.
+// 정수 만개를 기록하면 몇 바이트가 필요한가?
+
+int a[10000];
+
+int main()
+{
+	uniform_int_distribution<int> uid;
+	default_random_engine dre;
+
+	for (int& d : a)
+		d = uid(dre);
+
+	sort(begin(a), end(a));
+
+	std::ofstream out("정수만개.dat", ios::binary);
+
+	save("소스.cpp");
+}
+
+
+
+=========================================
+Thu Mar 14 14:40:22 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 정수 만개를 생성하고 랜덤값을 설정하고 정렬한 후
+// 파일 "정수만개.dat"에 기록하라.
+// 정수 만개를 기록하면 몇 바이트가 필요한가?
+
+int a[10000];
+
+int main()
+{
+	uniform_int_distribution<int> uid;
+	default_random_engine dre;
+
+	for (int& d : a)
+		d = uid(dre);
+
+	sort(begin(a), end(a));
+
+	std::ofstream out("정수만개.dat", ios::binary);
+	
+	for (int d : a)
+		out << d;
+
+	save("소스.cpp");
+}
+
+
+
+=========================================
+Thu Mar 14 14:40:55 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 정수 만개를 생성하고 랜덤값을 설정하고 정렬한 후
+// 파일 "정수만개.dat"에 기록하라.
+// 정수 만개를 기록하면 몇 바이트가 필요한가?
+
+int a[10000];
+
+int main()
+{
+	uniform_int_distribution<int> uid;
+	default_random_engine dre;
+
+	for (int& d : a)
+		d = uid(dre);
+
+	sort(begin(a), end(a));
+
+	std::ofstream out("정수만개.txt", ios::binary);
+	
+	for (int d : a)
+		out << d;
+
+	save("소스.cpp");
+}
+
+
+
+=========================================
+Thu Mar 14 14:42:50 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 정수 만개를 생성하고 랜덤값을 설정하고 정렬한 후
+// 파일 "정수만개.dat"에 기록하라.
+// 정수 만개를 기록하면 몇 바이트가 필요한가?
+
+int a[10000];
+
+int main()
+{
+	uniform_int_distribution<int> uid;
+	default_random_engine dre;
+
+	for (int& d : a)
+		d = uid(dre);
+
+	sort(begin(a), end(a));
+
+	ofstream out("정수만개.dat", ios::binary);
+	
+	for (int d : a)
+		out << d;
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 14 14:43:23 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 정수 만개를 생성하고 랜덤값을 설정하고 정렬한 후
+// 파일 "정수만개.dat"에 기록하라.
+// 정수 만개를 기록하면 몇 바이트가 필요한가?
+
+int a[10000];
+
+int main()
+{
+	uniform_int_distribution<int> uid;
+	default_random_engine dre;
+
+	for (int& d : a)
+		d = uid(dre);
+
+	sort(begin(a), end(a));
+
+	ofstream out("정수만개.dat");
+	
+	for (int d : a)
+		out << d;
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 14 14:44:38 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 정수 만개를 생성하고 랜덤값을 설정하고 정렬한 후
+// 파일 "정수만개.dat"에 기록하라.
+// 정수 만개를 기록하면 몇 바이트가 필요한가?
+
+int a[10000];
+
+int main()
+{
+	uniform_int_distribution<int> uid;
+	default_random_engine dre;
+
+	for (int& d : a)
+		d = uid(dre);
+
+	sort(begin(a), end(a));
+
+	ofstream out("정수만개.dat");
+	
+	for (int d : a)
+		out << d;
+
+
+
+	for (int d : a)
+		cout << d << ' ';
+	cout << endl;
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 14 14:51:00 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 정수 만개를 생성하고 랜덤값을 설정하고 정렬한 후
+// 파일 "정수만개.dat"에 기록하라.
+// 정수 만개를 기록하면 몇 바이트가 필요한가?
+
+int a[10000];
+
+int main()
+{
+	uniform_int_distribution<int> uid;
+	default_random_engine dre;
+
+	for (int& d : a)
+		d = uid(dre);
+
+	sort(begin(a), end(a));
+
+	ofstream out("정수만개.dat");
+	
+	for (int d : a)
+		out << d << ' ';
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 14 14:53:39 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 정수 만개를 생성하고 랜덤값을 설정하고 정렬한 후
+// 파일 "정수만개.dat"에 기록하라.
+// 정수 만개를 기록하면 몇 바이트가 필요한가?
+
+int a[10000];
+
+int main()
+{
+	uniform_int_distribution<int> uid;
+	default_random_engine dre;
+
+	for (int& d : a)
+		d = uid(dre);
+
+	sort(begin(a), end(a));
+
+	ofstream out("정수만개.dat",ios::binary);
+	
+	for (int d : a)
+		out << d << ' ';
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 14 14:59:57 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 정수 만개를 생성하고 랜덤값을 설정하고 정렬한 후
+// 파일 "정수만개.dat"에 기록하라.
+// 정수 만개를 기록하면 몇 바이트가 필요한가?
+
+int a[10000];
+
+int main()
+{
+	uniform_int_distribution<int> uid;
+	default_random_engine dre;
+
+	for (int& d : a)
+		d = uid(dre);
+
+	sort(begin(a), end(a));
+
+	ofstream out("정수만개.dat",ios::binary);
+	
+	
+
+	// 0번째 원소의 시작번지부터, 모두 10000개의 * sizeof(int);
+	// 저수준 입출력 , 4만바이트를 한번에 기록
+	out.write(reinterpret_cast<char*>(a), 10000 * sizeof(int));
+
+	//for (int d : a)
+	//	out << d << ' ';
+
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 14 15:01:31 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 정수 만개를 생성하고 랜덤값을 설정하고 정렬한 후
+// 파일 "정수만개.dat"에 기록하라.
+// 정수 만개를 기록하면 몇 바이트가 필요한가?
+
+int a[10000];
+
+int main()
+{
+	uniform_int_distribution<int> uid;
+	default_random_engine dre;
+
+	for (int& d : a)
+		d = uid(dre);
+
+	sort(begin(a), end(a));
+
+	ofstream out("정수만개.dat",ios::binary);
+	
+	
+
+	// 0번째 원소의 시작번지부터, 모두 10000개의 * sizeof(int);
+	// 저수준 입출력 , 4만바이트를 한번에 기록
+	out.write(const_cast<const char*>(reinterpret_cast<char*>(a)), 10000 * sizeof(int));
+
+	//for (int d : a)
+	//	out << d << ' ';
+
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 14 15:02:09 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 정수 만개를 생성하고 랜덤값을 설정하고 정렬한 후
+// 파일 "정수만개.dat"에 기록하라.
+// 정수 만개를 기록하면 몇 바이트가 필요한가?
+
+int a[10000];
+
+int main()
+{
+	uniform_int_distribution<int> uid;
+	default_random_engine dre;
+
+	for (int& d : a)
+		d = uid(dre);
+
+	sort(begin(a), end(a));
+
+	ofstream out("정수만개.dat");
+	
+	
+
+	// 0번째 원소의 시작번지부터, 모두 10000개의 * sizeof(int);
+	// 저수준 입출력 , 4만바이트를 한번에 기록
+	out.write(const_cast<const char*>(reinterpret_cast<char*>(a)), 10000 * sizeof(int));
+
+	//for (int d : a)
+	//	out << d << ' ';
+
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 14 15:02:40 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 정수 만개를 생성하고 랜덤값을 설정하고 정렬한 후
+// 파일 "정수만개.dat"에 기록하라.
+// 정수 만개를 기록하면 몇 바이트가 필요한가?
+
+int a[10000];
+
+int main()
+{
+	uniform_int_distribution<int> uid;
+	default_random_engine dre;
+
+	for (int& d : a)
+		d = uid(dre);
+
+	sort(begin(a), end(a));
+
+	ofstream out("정수만개.dat");
+	
+	
+
+	// 0번째 원소의 시작번지부터, 모두 10000개의 * sizeof(int);
+	// 저수준 입출력 , 4만바이트를 한번에 기록
+	//out.write(const_cast<const char*>(reinterpret_cast<char*>(a)), 10000 * sizeof(int));
+
+	out.write((char*)a, 10000 * sizeof(int));
+
+
+
+	//for (int d : a)
+	//	out << d << ' ';
+
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 14 15:03:43 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 정수 만개를 생성하고 랜덤값을 설정하고 정렬한 후
+// 파일 "정수만개.dat"에 기록하라.
+// 정수 만개를 기록하면 몇 바이트가 필요한가?
+
+int a[10000];
+
+int main()
+{
+	uniform_int_distribution<int> uid;
+	default_random_engine dre;
+
+	for (int& d : a)
+		d = uid(dre);
+
+	sort(begin(a), end(a));
+
+	ofstream out("정수만개.dat",ios::binary);
+	
+	
+
+	// 0번째 원소의 시작번지부터, 모두 10000개의 * sizeof(int);
+	// 저수준 입출력 , 4만바이트를 한번에 기록
+	//out.write(const_cast<const char*>(reinterpret_cast<char*>(a)), 10000 * sizeof(int));
+
+	out.write((char*)a, 10000 * sizeof(int));
+
+
+
+	//for (int d : a)
+	//	out << d << ' ';
+
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 14 15:04:10 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 정수 만개를 생성하고 랜덤값을 설정하고 정렬한 후
+// 파일 "정수만개.dat"에 기록하라.
+// 정수 만개를 기록하면 몇 바이트가 필요한가?
+
+int a[10000];
+
+int main()
+{
+	uniform_int_distribution<int> uid;
+	default_random_engine dre;
+
+	for (int& d : a)
+		d = uid(dre);
+
+	sort(begin(a), end(a));
+
+	ofstream out("정수만개.dat");
+	
+	
+
+	// 0번째 원소의 시작번지부터, 모두 10000개의 * sizeof(int);
+	// 저수준 입출력 , 4만바이트를 한번에 기록
+	//out.write(const_cast<const char*>(reinterpret_cast<char*>(a)), 10000 * sizeof(int));
+
+	out.write((char*)a, 10000 * sizeof(int));
+
+
+
+	//for (int d : a)
+	//	out << d << ' ';
+
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 14 15:04:28 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 정수 만개를 생성하고 랜덤값을 설정하고 정렬한 후
+// 파일 "정수만개.dat"에 기록하라.
+// 정수 만개를 기록하면 몇 바이트가 필요한가?
+
+int a[10000];
+
+int main()
+{
+	uniform_int_distribution<int> uid;
+	default_random_engine dre;
+
+	for (int& d : a)
+		d = uid(dre);
+
+	sort(begin(a), end(a));
+
+	ofstream out("정수만개.dat",ios::binary);
+	
+	
+
+	// 0번째 원소의 시작번지부터, 모두 10000개의 * sizeof(int);
+	// 저수준 입출력 , 4만바이트를 한번에 기록
+	//out.write(const_cast<const char*>(reinterpret_cast<char*>(a)), 10000 * sizeof(int));
+
+	out.write((char*)a, 10000 * sizeof(int));
+
+
+
+	//for (int d : a)
+	//	out << d << ' ';
+
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 14 15:10:15 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 파일 "정수 만개.dat"에는 정수 만개가 오름 차순으로 정렬 되어있다.
+// 이 파일은 binary 모드로 기록되어 있다.
+
+// 읽어서 화면에 출력하라.
+
+int main()
+{
+	ifstream in("정수 만개.dat", ios::binary);
+	while (in)
+	{
+		cout << in.get();
+
+	}
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 14 15:11:08 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 파일 "정수 만개.dat"에는 정수 만개가 오름 차순으로 정렬 되어있다.
+// 이 파일은 binary 모드로 기록되어 있다.
+
+// 읽어서 화면에 출력하라.
+
+int main()
+{
+	ifstream in("정수 만개.dat", ios::binary);
+	while (in.eof())
+	{
+		cout << in.get();
+
+	}
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 14 15:12:59 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 파일 "정수 만개.dat"에는 정수 만개가 오름 차순으로 정렬 되어있다.
+// 이 파일은 binary 모드로 기록되어 있다.
+
+// 읽어서 화면에 출력하라.
+int a[10000];
+int main()
+{
+	
+	ifstream in("정수 만개.dat", ios::binary);
+	in.read((char*)a, 40000);
+
+	for (int d : a)
+		cout << d << ' ';
+	cout << endl; 
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 14 15:13:25 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 파일 "정수 만개.dat"에는 정수 만개가 오름 차순으로 정렬 되어있다.
+// 이 파일은 binary 모드로 기록되어 있다.
+
+// 읽어서 화면에 출력하라.
+int a[10000];
+int main()
+{
+	
+	ifstream in("정수만개.dat", ios::binary);
+	in.read((char*)a, 40000);
+
+	for (int d : a)
+		cout << d << ' ';
+	cout << endl; 
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 14 15:18:53 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 14일 (목)  2주 1
+//
+// 책 간략하게 소개
+//
+// 큰 데이터 다루기
+// 파일을 읽고 쓰기
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <iomanip> // io 조작
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+// 파일 "정수 만개.dat"에는 정수 만개가 오름 차순으로 정렬 되어있다.
+// 이 파일은 binary 모드로 기록되어 있다.
+
+// 읽어서 화면에 출력하라.
+int a[10000];
+int main()
+{
+	
+	ifstream in("정수만개.dat", ios::binary);
+	//in.read((char*)a, 40000);
+
+	//for (int d : a)
+	//	cout << d << ' ';
+	//cout << endl; 
+
+	int d = 0;
+
+	for (int i = 0; i < 10000; ++i) {
+		in.read((char*)&d, 4);
+		cout << d << ' ';
+	}
+
+	cout << endl;
+
+	save("소스.cpp");
+
+
+}
+

@@ -1,0 +1,3312 @@
+
+
+=========================================
+Thu Mar 21 13:33:32 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//
+//
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+int main()
+{
+	// 1, 일반함수
+	cout << sin(3.14) << endl;
+
+	// 2. 람다
+	// 3. 함수객체
+	// 4. 멤버함수
+	
+		
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 13:35:51 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//
+//
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+int main()
+{
+	// 1, 일반함수
+		//auto f1 = sin(3.14);
+	double(*f1)(double) = sin;
+	cout << typeid(f1).name() << endl;
+
+	// 2. 람다
+	// 3. 함수객체
+	// 4. 멤버함수
+	
+		
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 13:36:54 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//
+//
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+int main()
+{
+	// 1, 일반함수
+		//auto f1 = sin(3.14);
+	double(*f1)(double) = sin;
+	cout << typeid(f1).name() << endl;
+
+	// 2. 람다
+	auto f2 = []() {};
+	cout << typeid(f2).name() << endl;
+	
+	// 3. 함수객체
+	// 4. 멤버함수
+	
+		
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 13:38:18 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//
+//
+//------------------------------------------------------------------------------------------------
+#include <iostream>
+#include <algorithm>
+
+#include "save.h"
+#include <random>
+
+#include <fstream>
+using namespace std;
+
+class Dog {
+public:
+	void operator()()
+	{
+		;
+	}
+};
+
+int main()
+{
+	// 1, 일반함수
+		//auto f1 = sin(3.14);
+	double(*f1)(double) = sin;
+	cout << typeid(f1).name() << endl;
+
+	// 2. 람다
+	auto f2 = []() {};
+	cout << typeid(f2).name() << endl;
+	
+	// 3. 함수객체
+
+
+
+	// 4. 멤버함수
+	
+		
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 13:39:38 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <algorithm>
+
+#include <random>
+
+#include <fstream>
+#include "save.h"
+
+using namespace std;
+
+class Dog {
+public:
+	void operator()()
+	{
+		;
+	}
+};
+
+int main()
+{
+	// 1, 일반함수
+		//auto f1 = sin(3.14);
+	double(*f1)(double) = sin;
+	cout << typeid(f1).name() << endl;
+
+	// 2. 람다
+	auto f2 = []() {};
+	cout << typeid(f2).name() << endl;
+	
+	// 3. 함수객체
+
+
+
+	// 4. 멤버함수
+	
+		
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 13:41:14 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <algorithm>
+
+#include <random>
+
+#include <fstream>
+#include "save.h"
+
+using namespace std;
+
+class Dog {
+public:
+	void operator()(){}
+	void jump() {}
+};
+
+int main()
+{
+	// 1, 일반함수
+		//auto f1 = sin(3.14);
+	double(*f1)(double) = sin;
+	cout << typeid(f1).name() << endl;
+
+	// 2. 람다
+	auto f2 = []() {};
+	cout << typeid(f2).name() << endl;
+	
+	// 3. 함수객체
+	Dog d;
+	d();
+
+
+	// 4. 멤버함수
+	Dog dog;
+	dog.jump();
+	auto f4 = &Dog::jump;
+	cout << typeid(f4).name() << endl;
+		
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 13:42:07 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <algorithm>
+
+#include <random>
+
+#include <fstream>
+#include "save.h"
+
+using namespace std;
+
+class Dog {
+public:
+	void operator()(){}
+	void jump() {}
+};
+
+int main()
+{
+	// 1, 일반함수
+		//auto f1 = sin(3.14);
+	double(*f1)(double) = sin;
+	cout << typeid(f1).name() << endl;
+
+	// 2. 람다
+	auto f2 = []() {};
+	cout << typeid(f2).name() << endl;
+	
+	// 3. 함수객체
+	Dog d;
+	d();
+
+
+	// 4. 멤버함수
+	Dog dog;
+	dog.jump();
+	void (Dog::*f4)(void) = &Dog::jump;
+	cout << typeid(f4).name() << endl;
+		
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 13:44:45 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <algorithm>
+
+#include <random>
+
+#include <fstream>
+#include "save.h"
+
+using namespace std;
+
+class Dog {
+public:
+	void operator()(){}
+	void jump() {}
+};
+
+int main()
+{
+	// 1, 일반함수
+		//auto f1 = sin(3.14);
+	double(*f1)(double) = sin;
+	cout << typeid(f1).name() << endl;
+
+	// 2. 람다
+	auto f2 = []() {};
+	cout << typeid(f2).name() << endl;
+	
+	// 3. 함수객체
+	Dog d;
+	d();
+
+
+	// 4. 멤버함수
+	
+	Dog* pd = new Dog;
+	void (Dog::*f4)(void) = &Dog::jump;
+	(pd->*f4)();
+	
+	//Dog dog;
+	//dog.jump();
+	//void (Dog::*f4)(void) = &Dog::jump;
+	//cout << typeid(f4).name() << endl;
+	//	
+	//(dog.*f4)();
+
+
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 13:45:41 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <algorithm>
+
+#include <random>
+
+#include <fstream>
+#include "save.h"
+
+using namespace std;
+
+class Dog {
+public:
+	void operator()(){}
+	void jump() {}
+};
+
+int main()
+{
+	// 1, 일반함수
+		//auto f1 = sin(3.14);
+	double(*f1)(double) = sin;
+	cout << typeid(f1).name() << endl;
+
+	// 2. 람다
+	auto f2 = []() {};
+	cout << typeid(f2).name() << endl;
+	
+	// 3. 함수객체
+	Dog d;
+	d();
+
+
+	// 4. 멤버함수
+	
+	Dog* pd = new Dog;
+	void (Dog::*f4)(void) = &Dog::jump;
+	(pd->*f4)();
+	cout << typeid(f4).name() << endl;
+	
+	//Dog dog;
+	//dog.jump();
+	//void (Dog::*f4)(void) = &Dog::jump;
+	//cout << typeid(f4).name() << endl;
+	//	
+	//(dog.*f4)();
+
+
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 14:03:42 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+
+#include <functional>
+#include <cmath>
+#include "save.h"
+
+using namespace std;
+
+class Dog {
+public:
+	
+	void operator()(){}
+	void jump() {
+		cout <<this <<  "점프" << endl;
+	}
+};
+
+
+// 람다와 일반 함수의 차이
+ // 일반 함수는 전역에서만 만들어야함
+	// 람다는 정의를 지역에서 할 수 있고 사용가능함
+
+void f() 
+{
+	cout << "그냥 함수" << endl;
+}
+
+
+int main()
+{
+
+	// 1, 일반함수
+		//auto f1 = sin(3.14);
+//	double(*f1)(double) = sin;
+//	cout << f1(0) << endl;
+//	cout << typeid(f1).name() << endl;
+
+	function<void(void)> f1 = f;
+	cout << typeid(f1).name() << endl;
+
+	// 2. 람다
+	/*auto f2 = []() {};
+	cout << typeid(f2).name() << endl;
+	*/
+
+	function<void(void)>f2 = []() {cout << "람다" << endl; };
+	cout << typeid(f2).name() << endl;
+	
+	
+	// 3. 함수객체
+	/*Dog d;
+	d();
+*/
+
+	// 4. 멤버함수
+	
+	/*Dog* pd = new Dog;
+	void (Dog::*f4)(void) = &Dog::jump;
+	(pd->*f4)();
+	cout << typeid(f4).name() << endl;*/
+	Dog a, b, c, d;
+	a.jump();
+	b.jump();
+	c.jump();
+	d.jump();
+
+	//function<void(void)> f4 = &Dog::jump;
+
+
+	//Dog dog;
+	//dog.jump();
+	//void (Dog::*f4)(void) = &Dog::jump;
+	//cout << typeid(f4).name() << endl;
+	//	
+	//(dog.*f4)();
+
+
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 14:04:18 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+
+#include <functional>
+#include <cmath>
+#include "save.h"
+
+using namespace std;
+
+class Dog {
+public:
+	
+	void operator()(){}
+	void jump() {
+		cout <<this <<  "점프" << endl;
+	}
+};
+
+
+// 람다와 일반 함수의 차이
+ // 일반 함수는 전역에서만 만들어야함
+	// 람다는 정의를 지역에서 할 수 있고 사용가능함
+
+void f() 
+{
+	cout << "그냥 함수" << endl;
+}
+
+
+int main()
+{
+
+	// 1, 일반함수
+		//auto f1 = sin(3.14);
+//	double(*f1)(double) = sin;
+//	cout << f1(0) << endl;
+//	cout << typeid(f1).name() << endl;
+
+	function<void(void)> f1 = f;
+	cout << typeid(f1).name() << endl;
+
+	// 2. 람다
+	/*auto f2 = []() {};
+	cout << typeid(f2).name() << endl;
+	*/
+
+	function<void(void)>f2 = []() {cout << "람다" << endl; };
+	cout << typeid(f2).name() << endl;
+	
+	
+	// 3. 함수객체
+	/*Dog d;
+	d();
+*/
+
+	// 4. 멤버함수
+	
+	/*Dog* pd = new Dog;
+	void (Dog::*f4)(void) = &Dog::jump;
+	(pd->*f4)();
+	cout << typeid(f4).name() << endl;*/
+	Dog a;
+	
+
+	function<void(Dog* const)> f4 = &Dog::jump;
+	f4(&a);
+
+	//Dog dog;
+	//dog.jump();
+	//void (Dog::*f4)(void) = &Dog::jump;
+	//cout << typeid(f4).name() << endl;
+	//	
+	//(dog.*f4)();
+
+
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 14:04:26 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+
+#include <functional>
+#include <cmath>
+#include "save.h"
+
+using namespace std;
+
+class Dog {
+public:
+	
+	void operator()(){}
+	void jump() {
+		cout <<this <<  "점프" << endl;
+	}
+};
+
+
+// 람다와 일반 함수의 차이
+ // 일반 함수는 전역에서만 만들어야함
+	// 람다는 정의를 지역에서 할 수 있고 사용가능함
+
+void f() 
+{
+	cout << "그냥 함수" << endl;
+}
+
+
+int main()
+{
+
+	// 1, 일반함수
+		//auto f1 = sin(3.14);
+//	double(*f1)(double) = sin;
+//	cout << f1(0) << endl;
+//	cout << typeid(f1).name() << endl;
+
+	function<void(void)> f1 = f;
+	cout << typeid(f1).name() << endl;
+
+	// 2. 람다
+	/*auto f2 = []() {};
+	cout << typeid(f2).name() << endl;
+	*/
+
+	function<void(void)>f2 = []() {cout << "람다" << endl; };
+	cout << typeid(f2).name() << endl;
+	
+	
+	// 3. 함수객체
+	/*Dog d;
+	d();
+*/
+
+	// 4. 멤버함수
+	
+	/*Dog* pd = new Dog;
+	void (Dog::*f4)(void) = &Dog::jump;
+	(pd->*f4)();
+	cout << typeid(f4).name() << endl;*/
+	
+	Dog a;
+
+	function<void(Dog* const)> f4 = &Dog::jump;
+	f4(&a);
+
+	//Dog dog;
+	//dog.jump();
+	//void (Dog::*f4)(void) = &Dog::jump;
+	//cout << typeid(f4).name() << endl;
+	//	
+	//(dog.*f4)();
+
+
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 14:04:56 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+
+#include <functional>
+#include <cmath>
+#include "save.h"
+
+using namespace std;
+
+class Dog {
+public:
+	
+	void operator()(){}
+	void jump() {
+		cout <<this <<  "점프" << endl;
+	}
+};
+
+
+// 람다와 일반 함수의 차이
+ // 일반 함수는 전역에서만 만들어야함
+	// 람다는 정의를 지역에서 할 수 있고 사용가능함
+
+void f() 
+{
+	cout << "그냥 함수" << endl;
+}
+
+
+int main()
+{
+
+	// 1, 일반함수
+		//auto f1 = sin(3.14);
+//	double(*f1)(double) = sin;
+//	cout << f1(0) << endl;
+//	cout << typeid(f1).name() << endl;
+
+	function<void(void)> f1 = f;
+	cout << typeid(f1).name() << endl;
+
+	// 2. 람다
+	/*auto f2 = []() {};
+	cout << typeid(f2).name() << endl;
+	*/
+
+	function<void(void)>f2 = []() {cout << "람다" << endl; };
+	cout << typeid(f2).name() << endl;
+	
+	
+	// 3. 함수객체
+	/*Dog d;
+	d();
+*/
+
+	// 4. 멤버함수
+	
+	/*Dog* pd = new Dog;
+	void (Dog::*f4)(void) = &Dog::jump;
+	(pd->*f4)();
+	cout << typeid(f4).name() << endl;*/
+	
+	Dog a;
+
+	function<void(Dog* const)> f4 = &Dog::jump;
+	
+	cout << typeid(f4).name() << endl;
+	f4(&a);
+
+	//Dog dog;
+	//dog.jump();
+	//void (Dog::*f4)(void) = &Dog::jump;
+	//cout << typeid(f4).name() << endl;
+	//	
+	//(dog.*f4)();
+
+
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 14:07:41 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+
+#include <functional>
+#include <cmath>
+#include "save.h"
+
+using namespace std;
+
+class Dog {
+public:
+	
+	void operator()(){}
+	void jump() {
+		cout <<this <<  "점프" << endl;
+	}
+};
+
+
+// 람다와 일반 함수의 차이
+ // 일반 함수는 전역에서만 만들어야함
+	// 람다는 정의를 지역에서 할 수 있고 사용가능함 , 지역함수 -> 캡처가 필요함 
+	// 38p  
+
+
+void f() 
+{
+	cout << "그냥 함수" << endl;
+}
+
+
+int main()
+{
+
+	// 1, 일반함수
+		//auto f1 = sin(3.14);
+//	double(*f1)(double) = sin;
+//	cout << f1(0) << endl;
+//	cout << typeid(f1).name() << endl;
+
+	function<void(void)> f1 = f;
+	cout << typeid(f1).name() << endl;
+
+	// 2. 람다
+	/*auto f2 = []() {};
+	cout << typeid(f2).name() << endl;
+	*/
+
+	function<void(void)>f2 = []() {cout << "람다" << endl; };
+	cout << typeid(f2).name() << endl;
+	
+	
+	// 3. 함수객체
+	/*Dog d;
+	d();
+*/
+
+	// 4. 멤버함수
+	
+	/*Dog* pd = new Dog;
+	void (Dog::*f4)(void) = &Dog::jump;
+	(pd->*f4)();
+	cout << typeid(f4).name() << endl;*/
+	
+	Dog a;
+
+	function<void(Dog* const)> f4 = &Dog::jump;
+	
+	cout << typeid(f4).name() << endl;
+	f4(&a);
+
+	//Dog dog;
+	//dog.jump();
+	//void (Dog::*f4)(void) = &Dog::jump;
+	//cout << typeid(f4).name() << endl;
+	//	
+	//(dog.*f4)();
+
+
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 14:26:00 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+class String
+{
+
+public:
+	String(int size);
+	~String();
+	friend ostream& operator<<(ostream& os, const String& s);
+
+
+private:
+	char * p;
+
+};
+
+String::String(int size)
+{
+	p = new char[size];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+}
+
+String::~String()
+{
+	delete[] p;
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{
+	return os;
+}
+
+
+int main()
+{
+	String a{ 20 };
+
+	cout << a << endl;
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 14:26:09 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+class String
+{
+
+public:
+	String(int size);
+	~String();
+	friend ostream& operator<<(ostream& os, const String& s);
+
+
+private:
+	char * p;
+
+};
+
+String::String(int size)
+{
+	p = new char[size];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+}
+
+String::~String()
+{
+	delete[] p;
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{
+	return os << s.p;
+}
+
+
+int main()
+{
+	String a{ 20 };
+
+	cout << a << endl;
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 14:29:10 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+class String
+{
+
+public:
+	String(int size);
+	~String();
+	friend ostream& operator<<(ostream& os, const String& s);
+
+
+private:
+	char * p;
+
+};
+
+String::String(int size)
+{
+	p = new char[size];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+}
+
+String::~String()
+{
+	delete[] p;
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{
+	return os << s.p;
+}
+
+
+int main()
+{
+	String a{ 20 };
+
+	cout << a << endl;
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 14:29:19 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+class String
+{
+
+public:
+	String(int size);
+	~String();
+	friend ostream& operator<<(ostream& os, const String& s);
+
+
+private:
+	char * p;
+
+};
+
+String::String(int size)
+{
+	p = new char[size];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+}
+
+String::~String()
+{
+	delete[] p;
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{
+	return os << s.p;
+}
+
+
+int main()
+{
+	String a{ 20 };
+
+	cout << a << endl;
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 14:30:13 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+class String
+{
+
+public:
+	String(int size);
+	~String();
+	friend ostream& operator<<(ostream& os, const String& s);
+
+
+private:
+	char * p;
+
+};
+
+String::String(int size)
+{
+	p = new char[size+1];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+	p[size] = '\0';
+}
+
+String::~String()
+{
+	delete[] p;
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{
+	return os << s.p;
+}
+
+
+int main()
+{
+	String a{ 20 };
+
+	cout << a << endl;
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 14:37:08 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+class String
+{
+
+public:
+	String(int size);
+	~String();
+	friend ostream& operator<<(ostream& os, const String& s);
+
+
+private:
+	char * p;
+
+};
+
+String::String(int size)
+{
+	p = new char[size+1];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+	p[size] = '\0';
+}
+
+String::~String()
+{
+	delete[] p;
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{
+	return os << s.p;
+}
+
+
+int main()
+{
+	String a{ 200000 };
+
+	cout << a << endl;
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 14:43:06 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+// String은 자원을 할당하는 클래스이다.
+// 1. 생성 시 new로 자원할당
+// 2. 소멸 시 delete로 해제 
+
+
+class String
+{
+
+public:
+	String(int size);
+	~String();
+	friend ostream& operator<<(ostream& os, const String& s);
+
+
+private:
+	char * p;
+
+};
+
+String::String(int size)
+{
+	p = new char[size+1];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+	p[size] = '\0';
+}
+
+String::~String()
+{
+	if(p)
+		delete[] p;
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{
+	return os << s.p;
+}
+
+
+int main()
+{
+	String a{ 20 };
+
+	String b = a;
+
+
+	cout << a << endl;
+	cout << b << endl;
+
+
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 14:43:28 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+// String은 자원을 할당하는 클래스이다.
+// 1. 생성 시 new로 자원할당
+// 2. 소멸 시 delete로 해제 
+
+
+class String
+{
+
+public:
+	String(int size);
+	~String();
+	friend ostream& operator<<(ostream& os, const String& s);
+
+
+private:
+	char * p;
+
+};
+
+String::String(int size)
+{
+	p = new char[size+1];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+	p[size] = '\0';
+}
+
+String::~String()
+{
+	if (p != nullptr) {
+		delete[] p;
+		p = nullptr;
+	}
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{
+	return os << s.p;
+}
+
+
+int main()
+{
+	String a{ 20 };
+
+	String b = a;
+
+
+	cout << a << endl;
+	cout << b << endl;
+
+
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 14:52:26 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+// String은 자원을 할당하는 클래스이다.
+// 1. 생성 시 new로 자원할당
+// 2. 소멸 시 delete로 해제 
+// 3. 복사 생성자에서 깊은 복사를 한다. 
+// 4. 할당 연산자에서 깊은 복사를 한다. 
+
+class String
+{
+
+public:
+	
+	String(int size);
+
+	String(const String&);
+
+
+	~String();
+	
+	friend ostream& operator<<(ostream& os, const String& s);
+
+	String& operator= (const String& other);
+
+private:
+	char * p;
+	int num;
+};
+
+String::String(int size) : num(size)
+{
+	p = new char[size];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+}
+
+String::String(const String & other) : num{ other.num }
+{
+	p = new char[num];
+	memcpy(p, other.p, num);
+}
+
+String::~String()
+{
+	delete[] p;
+}
+
+String & String::operator=(const String & other)
+{
+	if (this == &other)
+		return *this;
+
+	delete[] p;
+	num = other.num;
+	p = new char[num];
+	memcpy(p, other.p, num);
+
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{	
+	for (int i = 0; i < s.num; ++i)
+		os << s.p[i];
+	return os;
+}
+
+
+int main()
+{
+	String a{ 20 };
+
+	String b = a;
+
+
+	cout << a << endl;
+	cout << b << endl;
+
+
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 14:54:59 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+// String은 자원을 할당하는 클래스이다.
+// 1. 생성 시 new로 자원할당
+// 2. 소멸 시 delete로 해제 
+// 3. 복사 생성자에서 깊은 복사를 한다. 
+// 4. 할당 연산자에서 깊은 복사를 한다. 
+
+class String
+{
+
+public:
+	
+	String();
+
+	String(int size);
+
+	String(const String&);
+
+
+	~String();
+	
+	friend ostream& operator<<(ostream& os, const String& s);
+
+	String& operator= (const String& other);
+
+private:
+	char * p;
+	int num;
+};
+
+String::String()
+{
+}
+
+String::String(int size) : num(size)
+{
+	p = new char[size];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+}
+
+String::String(const String & other) : num{ other.num }
+{
+	p = new char[num];
+	memcpy(p, other.p, num);
+}
+
+String::~String()
+{
+	delete[] p;
+}
+
+String & String::operator=(const String & other)
+{
+	if (this == &other)
+		return *this;
+
+	delete[] p;
+	num = other.num;
+	p = new char[num];
+	memcpy(p, other.p, num);
+
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{	
+	for (int i = 0; i < s.num; ++i)
+		os << s.p[i];
+	return os;
+}
+
+
+int main()
+{
+	String a[100];
+
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 14:55:58 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+// String은 자원을 할당하는 클래스이다.
+// 1. 생성 시 new로 자원할당
+// 2. 소멸 시 delete로 해제 
+// 3. 복사 생성자에서 깊은 복사를 한다. 
+// 4. 할당 연산자에서 깊은 복사를 한다. 
+
+class String
+{
+
+public:
+	
+	String() = default;
+
+	String(int size);
+
+	String(const String&);
+
+
+	~String();
+	
+	friend ostream& operator<<(ostream& os, const String& s);
+
+	String& operator= (const String& other);
+
+private:
+	char * p = nullptr;
+	int num{ 0 };
+};
+
+
+String::String(int size) : num(size)
+{
+	p = new char[size];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+}
+
+String::String(const String & other) : num{ other.num }
+{
+	p = new char[num];
+	memcpy(p, other.p, num);
+}
+
+String::~String()
+{
+	delete[] p;
+}
+
+String & String::operator=(const String & other)
+{
+	if (this == &other)
+		return *this;
+
+	delete[] p;
+	num = other.num;
+	p = new char[num];
+	memcpy(p, other.p, num);
+
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{	
+	for (int i = 0; i < s.num; ++i)
+		os << s.p[i];
+	return os;
+}
+
+
+int main()
+{
+	String a[100];
+
+
+
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 15:09:16 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+#include <algorithm>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+// String은 자원을 할당하는 클래스이다.
+// 1. 생성 시 new로 자원할당
+// 2. 소멸 시 delete로 해제 
+// 3. 복사 생성자에서 깊은 복사를 한다. 
+// 4. 할당 연산자에서 깊은 복사를 한다. 
+
+class String
+{
+
+public:
+	
+	String() = default;
+
+	String(int size);
+
+	String(const String&);
+
+
+	~String();
+	
+	friend ostream& operator<<(ostream& os, const String& s);
+
+	String& operator= (const String& other);
+
+	void setNum(int n); 
+
+	int getNum();
+private:
+	char * p = nullptr;
+	int num{ 0 };
+};
+
+
+String::String(int size) : num(size)
+{
+	p = new char[size];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+}
+
+String::String(const String & other) : num{ other.num }
+{
+	p = new char[num];
+	memcpy(p, other.p, num);
+}
+
+String::~String()
+{
+	delete[] p;
+}
+
+String & String::operator=(const String & other)
+{
+	if (this == &other)
+		return *this;
+
+	delete[] p;
+	num = other.num;
+	p = new char[num];
+	memcpy(p, other.p, num);
+
+}
+
+void String::setNum(int n)
+{
+	num = n;
+	if (!p)
+		delete[] p;
+	
+
+	p = new char[num];
+	for (int i = 0; i < num; ++i)
+		p[i] = ui(dre);
+}
+
+int String::getNum()
+{
+	return num;
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{	
+	for (int i = 0; i < s.num; ++i)
+		os << s.p[i];
+	return os;
+}
+
+
+int main()
+{
+	String a[100];
+
+	// string 을 임의의 길이로 설정하라.
+	uniform_int_distribution<> uidNum(10, 70);
+	for (String& d : a)
+		d.setNum(uidNum(dre));
+	// 길이 오름차순으로 정렬하라.
+	//sort(&a[0], &a[99],[](String& t1, String& t2){
+	//	return t1.getNum() < t2.getNum();
+	//});
+	
+	// 출력하라.
+	for (String d : a)
+		cout << d << endl;
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 15:09:28 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+#include <algorithm>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+// String은 자원을 할당하는 클래스이다.
+// 1. 생성 시 new로 자원할당
+// 2. 소멸 시 delete로 해제 
+// 3. 복사 생성자에서 깊은 복사를 한다. 
+// 4. 할당 연산자에서 깊은 복사를 한다. 
+
+class String
+{
+
+public:
+	
+	String() = default;
+
+	String(int size);
+
+	String(const String&);
+
+
+	~String();
+	
+	friend ostream& operator<<(ostream& os, const String& s);
+
+	String& operator= (const String& other);
+
+	void setNum(int n); 
+
+	int getNum();
+private:
+	char * p = nullptr;
+	int num{ 0 };
+};
+
+
+String::String(int size) : num(size)
+{
+	p = new char[size];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+}
+
+String::String(const String & other) : num{ other.num }
+{
+	p = new char[num];
+	memcpy(p, other.p, num);
+}
+
+String::~String()
+{
+	delete[] p;
+}
+
+String & String::operator=(const String & other)
+{
+	if (this == &other)
+		return *this;
+
+	delete[] p;
+	num = other.num;
+	p = new char[num];
+	memcpy(p, other.p, num);
+
+}
+
+void String::setNum(int n)
+{
+	num = n;
+	if (!p)
+		delete[] p;
+	
+
+	p = new char[num];
+	for (int i = 0; i < num; ++i)
+		p[i] = ui(dre);
+}
+
+int String::getNum()
+{
+	return num;
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{	
+	for (int i = 0; i < s.num; ++i)
+		os << s.p[i];
+	return os;
+}
+
+
+int main()
+{
+	String a[100];
+
+	// string 을 임의의 길이로 설정하라.
+	uniform_int_distribution<> uidNum(10, 70);
+	for (String& d : a)
+		d.setNum(uidNum(dre));
+	// 길이 오름차순으로 정렬하라.
+	sort(&a[0], &a[99],[](String& t1, String& t2){
+		return t1.getNum() < t2.getNum();
+	});
+	
+	// 출력하라.
+	for (String d : a)
+		cout << d << endl;
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 15:09:35 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+#include <algorithm>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+// String은 자원을 할당하는 클래스이다.
+// 1. 생성 시 new로 자원할당
+// 2. 소멸 시 delete로 해제 
+// 3. 복사 생성자에서 깊은 복사를 한다. 
+// 4. 할당 연산자에서 깊은 복사를 한다. 
+
+class String
+{
+
+public:
+	
+	String() = default;
+
+	String(int size);
+
+	String(const String&);
+
+
+	~String();
+	
+	friend ostream& operator<<(ostream& os, const String& s);
+
+	String& operator= (const String& other);
+
+	void setNum(int n); 
+
+	int getNum();
+private:
+	char * p = nullptr;
+	int num{ 0 };
+};
+
+
+String::String(int size) : num(size)
+{
+	p = new char[size];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+}
+
+String::String(const String & other) : num{ other.num }
+{
+	p = new char[num];
+	memcpy(p, other.p, num);
+}
+
+String::~String()
+{
+	delete[] p;
+}
+
+String & String::operator=(const String & other)
+{
+	if (this == &other)
+		return *this;
+
+	delete[] p;
+	num = other.num;
+	p = new char[num];
+	memcpy(p, other.p, num);
+
+}
+
+void String::setNum(int n)
+{
+	num = n;
+	if (!p)
+		delete[] p;
+	
+
+	p = new char[num];
+	for (int i = 0; i < num; ++i)
+		p[i] = ui(dre);
+}
+
+int String::getNum()
+{
+	return num;
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{	
+	for (int i = 0; i < s.num; ++i)
+		os << s.p[i];
+	return os;
+}
+
+
+int main()
+{
+	String a[100];
+
+	// string 을 임의의 길이로 설정하라.
+	uniform_int_distribution<> uidNum(10, 70);
+	for (String& d : a)
+		d.setNum(uidNum(dre));
+	// 길이 오름차순으로 정렬하라.
+	sort(&a[0], &a[99],[](String& t1, String& t2){
+		return t1.getNum() < t2.getNum();
+	});
+	
+	// 출력하라.
+	for (String d : a)
+		cout << d << endl;
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 15:09:59 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+#include <algorithm>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+// String은 자원을 할당하는 클래스이다.
+// 1. 생성 시 new로 자원할당
+// 2. 소멸 시 delete로 해제 
+// 3. 복사 생성자에서 깊은 복사를 한다. 
+// 4. 할당 연산자에서 깊은 복사를 한다. 
+
+class String
+{
+
+public:
+	
+	String() = default;
+
+	String(int size);
+
+	String(const String&);
+
+
+	~String();
+	
+	friend ostream& operator<<(ostream& os, const String& s);
+
+	String& operator= (const String& other);
+
+	void setNum(int n); 
+
+	int getNum();
+private:
+	char * p = nullptr;
+	int num{ 0 };
+};
+
+
+String::String(int size) : num(size)
+{
+	p = new char[size];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+}
+
+String::String(const String & other) : num{ other.num }
+{
+	p = new char[num];
+	memcpy(p, other.p, num);
+}
+
+String::~String()
+{
+	delete[] p;
+}
+
+String & String::operator=(const String & other)
+{
+	if (this == &other)
+		return *this;
+
+	delete[] p;
+	num = other.num;
+	p = new char[num];
+	memcpy(p, other.p, num);
+
+}
+
+void String::setNum(int n)
+{
+	num = n;
+	if (!p)
+		delete[] p;
+	
+
+	p = new char[num];
+	for (int i = 0; i < num; ++i)
+		p[i] = ui(dre);
+}
+
+int String::getNum()
+{
+	return num;
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{	
+	for (int i = 0; i < s.num; ++i)
+		os << s.p[i];
+	return os;
+}
+
+
+int main()
+{
+	String a[100];
+
+	// string 을 임의의 길이로 설정하라.
+	uniform_int_distribution<> uidNum(10, 70);
+	for (String& d : a)
+		d.setNum(uidNum(dre));
+	// 길이 오름차순으로 정렬하라.
+	sort(&a[0], &a[100],[](String& t1, String& t2){
+		return t1.getNum() < t2.getNum();
+	});
+	
+	// 출력하라.
+	for (String d : a)
+		cout << d << endl;
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 15:10:18 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+#include <algorithm>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+// String은 자원을 할당하는 클래스이다.
+// 1. 생성 시 new로 자원할당
+// 2. 소멸 시 delete로 해제 
+// 3. 복사 생성자에서 깊은 복사를 한다. 
+// 4. 할당 연산자에서 깊은 복사를 한다. 
+
+class String
+{
+
+public:
+	
+	String() = default;
+
+	String(int size);
+
+	String(const String&);
+
+
+	~String();
+	
+	friend ostream& operator<<(ostream& os, const String& s);
+
+	String& operator= (const String& other);
+
+	void setNum(int n); 
+
+	int getNum();
+private:
+	char * p = nullptr;
+	int num{ 0 };
+};
+
+
+String::String(int size) : num(size)
+{
+	p = new char[size];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+}
+
+String::String(const String & other) : num{ other.num }
+{
+	p = new char[num];
+	memcpy(p, other.p, num);
+}
+
+String::~String()
+{
+	delete[] p;
+}
+
+String & String::operator=(const String & other)
+{
+	if (this == &other)
+		return *this;
+
+	delete[] p;
+	num = other.num;
+	p = new char[num];
+	memcpy(p, other.p, num);
+
+}
+
+void String::setNum(int n)
+{
+	num = n;
+	if (!p)
+		delete[] p;
+	
+
+	p = new char[num];
+	for (int i = 0; i < num; ++i)
+		p[i] = ui(dre);
+}
+
+int String::getNum()
+{
+	return num;
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{	
+	for (int i = 0; i < s.num; ++i)
+		os << s.p[i];
+	return os;
+}
+
+
+int main()
+{
+	String a[100];
+
+	// string 을 임의의 길이로 설정하라.
+	uniform_int_distribution<> uidNum(10, 70);
+	for (String& d : a)
+		d.setNum(uidNum(dre));
+	// 길이 오름차순으로 정렬하라.
+	sort(begin(a), end(a),[](String& t1, String& t2){
+		return t1.getNum() < t2.getNum();
+	});
+	
+	// 출력하라.
+	for (String d : a)
+		cout << d << endl;
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 15:13:27 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+#include <algorithm>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+// String은 자원을 할당하는 클래스이다.
+// 1. 생성 시 new로 자원할당
+// 2. 소멸 시 delete로 해제 
+// 3. 복사 생성자에서 깊은 복사를 한다. 
+// 4. 할당 연산자에서 깊은 복사를 한다. 
+
+class String
+{
+
+public:
+	
+	String() = default;
+
+	String(int size);
+
+	String(const String&);
+
+
+	~String();
+	
+	friend ostream& operator<<(ostream& os, const String& s);
+
+	String& operator= (const String& other);
+
+	void setNum(int n); 
+
+	int getNum() const;
+private:
+	char * p = nullptr;
+	int num{ 0 };
+};
+
+
+String::String(int size) : num(size)
+{
+	p = new char[size];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+}
+
+String::String(const String & other) : num{ other.num }
+{
+	p = new char[num];
+	memcpy(p, other.p, num);
+}
+
+String::~String()
+{
+	delete[] p;
+}
+
+String & String::operator=(const String & other)
+{
+	if (this == &other)
+		return *this;
+
+	delete[] p;
+	num = other.num;
+	p = new char[num];
+	memcpy(p, other.p, num);
+
+}
+
+void String::setNum(int n)
+{
+	num = n;
+	if (!p)
+		delete[] p;
+	
+
+	p = new char[num];
+	for (int i = 0; i < num; ++i)
+		p[i] = ui(dre);
+}
+
+int String::getNum() const
+{
+	return num;
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{	
+	for (int i = 0; i < s.num; ++i)
+		os << s.p[i];
+	return os;
+}
+
+
+int main()
+{
+	String a[100];
+
+	// string 을 임의의 길이로 설정하라.
+	uniform_int_distribution<> uidNum(10, 70);
+	for (String& d : a)
+		d.setNum(uidNum(dre));
+	// 길이 오름차순으로 정렬하라.
+	sort(begin(a), end(a),[](const String& t1, const String& t2){
+		return t1.getNum() < t2.getNum();
+	});
+	
+	// 출력하라.
+	for (String d : a)
+		cout << d << endl;
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 15:14:40 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+#include <algorithm>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+// String은 자원을 할당하는 클래스이다.
+// 1. 생성 시 new로 자원할당
+// 2. 소멸 시 delete로 해제 
+// 3. 복사 생성자에서 깊은 복사를 한다. 
+// 4. 할당 연산자에서 깊은 복사를 한다. 
+
+class String
+{
+
+public:
+	
+	String() = default;
+
+	String(int size);
+
+	String(const String&);
+
+
+	~String();
+	
+	friend ostream& operator<<(ostream& os, const String& s);
+
+	String& operator= (const String& other);
+
+	void setNum(int n); 
+
+	int getNum() const;
+private:
+	char * p = nullptr;
+	int num{ 0 };
+};
+
+
+String::String(int size) : num(size)
+{
+	p = new char[size];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+}
+
+String::String(const String & other) : num{ other.num }
+{
+	p = new char[num];
+	memcpy(p, other.p, num);
+}
+
+String::~String()
+{
+	delete[] p;
+	//cout << "소멸됨" << endl;
+}
+
+String & String::operator=(const String & other)
+{
+	if (this == &other)
+		return *this;
+
+	delete[] p;
+	num = other.num;
+	p = new char[num];
+	memcpy(p, other.p, num);
+
+}
+
+void String::setNum(int n)
+{
+	num = n;
+	if (!p)
+		delete[] p;
+	
+
+	p = new char[num];
+	for (int i = 0; i < num; ++i)
+		p[i] = ui(dre);
+}
+
+int String::getNum() const
+{
+	return num;
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{	
+	for (int i = 0; i < s.num; ++i)
+		os << s.p[i];
+	return os;
+}
+
+
+int main()
+{
+	String a[100];
+
+	// string 을 임의의 길이로 설정하라.
+	uniform_int_distribution<> uidNum(10, 70);
+	for (String& d : a)
+		d.setNum(uidNum(dre));
+	// 길이 오름차순으로 정렬하라.
+	sort(begin(a), end(a),[](const String& t1, const String& t2){		// 이거 const & 안하면 소멸자 엄청 불릴거임 테스트 해보기
+		return t1.getNum() < t2.getNum();
+	});
+	
+	// 출력하라.
+	for (String d : a)
+		cout << d << endl;
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 15:16:03 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+#include <algorithm>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+// String은 자원을 할당하는 클래스이다.
+// 1. 생성 시 new로 자원할당
+// 2. 소멸 시 delete로 해제 
+// 3. 복사 생성자에서 깊은 복사를 한다. 
+// 4. 할당 연산자에서 깊은 복사를 한다. 
+
+class String
+{
+
+public:
+	
+	String() = default;
+
+	String(int size);
+
+	String(const String&);
+
+
+	~String();
+	
+	friend ostream& operator<<(ostream& os, const String& s);
+
+	String& operator= (const String& other);
+
+	void setNum(int n); 
+
+	int getNum() const;
+private:
+	char * p = nullptr;
+	int num{ 0 };
+};
+
+
+String::String(int size) : num(size)
+{
+	p = new char[size];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+}
+
+String::String(const String & other) : num{ other.num }
+{
+	p = new char[num];
+	memcpy(p, other.p, num);
+}
+
+String::~String()
+{
+	delete[] p;
+	//cout << "소멸됨" << endl;
+}
+
+String & String::operator=(const String & other)
+{
+	if (this == &other)
+		return *this;
+
+	delete[] p;
+	num = other.num;
+	p = new char[num];
+	memcpy(p, other.p, num);
+
+}
+
+void String::setNum(int n)
+{
+	num = n;
+	if (!p)
+		delete[] p;
+	
+
+	p = new char[num];
+	for (int i = 0; i < num; ++i)
+		p[i] = ui(dre);
+}
+
+int String::getNum() const
+{
+	return num;
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{	
+	for (int i = 0; i < s.num; ++i)
+		os << s.p[i];
+	return os;
+}
+
+
+int main()
+{
+	String a[100];
+
+	// string 을 임의의 길이로 설정하라.
+	uniform_int_distribution<> uidNum(10, 70);
+	for (String& d : a)
+		d.setNum(uidNum(dre));
+	// 길이 오름차순으로 정렬하라.
+	sort(begin(a), end(a),[](const String& t1, const String& t2){		// 이거 const & 안하면 소멸자 엄청 불릴거임 테스트 해보기
+		return t1.getNum() < t2.getNum();
+	});
+	
+	// 출력하라.
+	for (String& d : a)
+		cout << d << endl;
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 15:19:24 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//
+// 과제 - class String을 파일 분리하자.  #include "String.h"
+//			1장 읽어보기 
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+#include <algorithm>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+// String은 자원을 할당하는 클래스이다.
+// 1. 생성 시 new로 자원할당
+// 2. 소멸 시 delete로 해제 
+// 3. 복사 생성자에서 깊은 복사를 한다. 
+// 4. 할당 연산자에서 깊은 복사를 한다. 
+
+class String
+{
+
+public:
+	
+	String() = default;
+
+	String(int size);
+
+	String(const String&);
+
+
+	~String();
+	
+	friend ostream& operator<<(ostream& os, const String& s);
+
+	String& operator= (const String& other);
+
+	void setNum(int n); 
+
+	int getNum() const;
+private:
+	char * p = nullptr;
+	int num{ 0 };
+};
+
+
+String::String(int size) : num(size)
+{
+	p = new char[size];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+}
+
+String::String(const String & other) : num{ other.num }
+{
+	p = new char[num];
+	memcpy(p, other.p, num);
+}
+
+String::~String()
+{
+	delete[] p;
+	//cout << "소멸됨" << endl;
+}
+
+String & String::operator=(const String & other)
+{
+	if (this == &other)
+		return *this;
+
+	delete[] p;
+	num = other.num;
+	p = new char[num];
+	memcpy(p, other.p, num);
+
+}
+
+void String::setNum(int n)
+{
+	num = n;
+	if (!p)
+		delete[] p;
+	
+
+	p = new char[num];
+	for (int i = 0; i < num; ++i)
+		p[i] = ui(dre);
+}
+
+int String::getNum() const
+{
+	return num;
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{	
+	for (int i = 0; i < s.num; ++i)
+		os << s.p[i];
+	return os;
+}
+
+
+int main()
+{
+	String a[100];
+
+	// string 을 임의의 길이로 설정하라.
+	uniform_int_distribution<> uidNum(10, 70);
+	for (String& d : a)
+		d.setNum(uidNum(dre));
+	// 길이 오름차순으로 정렬하라.
+	sort(begin(a), end(a),[](const String& t1, const String& t2){		// 이거 const & 안하면 소멸자 엄청 불릴거임 테스트 해보기
+		return t1.getNum() < t2.getNum();
+	});
+	
+	// 출력하라.
+	for (String& d : a)
+		cout << d << endl;
+	save("소스.cpp");
+
+
+}
+
+
+
+=========================================
+Thu Mar 21 15:20:21 2019
+=========================================
+
+//------------------------------------------------------------------------------------------------
+// 2019년 3월 21일 (목)  3주 1
+//
+//	1장 읽어보기
+//
+//	자원을 확보하는 클래스 만들어보기
+//
+//
+// 과제 - class String을 파일 분리하자.  #include "String.h"
+//			1장 읽어보기 
+//------------------------------------------------------------------------------------------------
+
+#include <iostream>
+#include <random>
+#include <algorithm>
+
+#include "save.h"
+
+using namespace std;
+
+// 정수를 생성자의 인자로 받아 그 숫자만큼(byte) HEAP에서 메모리를 할당한다.
+// 메모리의 내용은 'a' ~ 'z' 사이의 임의의 소문자로 채운다
+// 다음 main이 문제없이 실행되도록 하자. 
+
+uniform_int_distribution<> ui('a', 'z');
+default_random_engine dre;
+
+// String은 자원을 할당하는 클래스이다.
+// 1. 생성 시 new로 자원할당
+// 2. 소멸 시 delete로 해제 
+// 3. 복사 생성자에서 깊은 복사를 한다. 
+// 4. 할당 연산자에서 깊은 복사를 한다. 
+
+class String
+{
+
+public:
+	
+	String() = default;
+
+	String(int size);
+
+	String(const String&);
+
+
+	~String();
+	
+	friend ostream& operator<<(ostream& os, const String& s);
+
+	String& operator= (const String& other);
+
+	void setNum(int n); 
+
+	int getNum() const;
+private:
+	char * p = nullptr;
+	int num{ 0 };
+};
+
+
+String::String(int size) : num(size)
+{
+	p = new char[size];
+	for (int i = 0; i < size; ++i)
+		p[i] = ui(dre);
+}
+
+String::String(const String & other) : num{ other.num }
+{
+	p = new char[num];
+	memcpy(p, other.p, num);
+}
+
+String::~String()
+{
+	delete[] p;
+	//cout << "소멸됨" << endl;
+}
+
+String & String::operator=(const String & other)
+{
+	if (this == &other)
+		return *this;
+
+	delete[] p;
+	num = other.num;
+	p = new char[num];
+	memcpy(p, other.p, num);
+
+}
+
+void String::setNum(int n)
+{
+	num = n;
+	if (!p)
+		delete[] p;
+	
+
+	p = new char[num];
+	for (int i = 0; i < num; ++i)
+		p[i] = ui(dre);
+}
+
+int String::getNum() const
+{
+	return num;
+}
+
+ostream& operator<<(ostream& os, const String& s)
+{	
+	for (int i = 0; i < s.num; ++i)
+		os << s.p[i];
+	return os;
+}
+
+
+int main()
+{
+	String a = { 20 };
+
+	String b = move(a);
+
+
+
+	cout << a << endl;
+	cout << b << endl;
+
+	// 지금은 이동생성자가 없으므로 복사생성자가 호출
+	// 그러므로 똑같이 호출될거임
+
+	// 이동은 다음시간에 정리 
+
+	save("소스.cpp");
+
+
+}
+
