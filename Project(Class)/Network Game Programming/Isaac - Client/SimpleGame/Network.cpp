@@ -218,7 +218,7 @@ void Network::ReceiveRenderData()
 			}
 
 			rendererData.resize(vecSize);
-			retval = recvn(clientSock, (char*)&rendererData[0], sizeof(RenderData) * vecSize, 0);
+			retval = recvn(Nw.clientSock, (char*)&rendererData[0], sizeof(RenderData) * vecSize, 0);
 			if (retval == SOCKET_ERROR) {
 				err_display(const_cast<char*>("recv()"));
 				exit(0);

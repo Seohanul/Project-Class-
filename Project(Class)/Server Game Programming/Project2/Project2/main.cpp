@@ -4,22 +4,27 @@
 #include <winsock2.h>
 #include "GL/glut.h"
 
-
 #include <stdlib.h>
 
 #include <iostream>
 #include <random>
 #include <time.h>
 #include <vector>
+#include <map>
 #include <math.h>
+#include "Pawn.h"
+
 
 #define Pi 3.141592
 #define BOARD_SCALE 50
 
 
-#define SERVERIP   "127.0.0.1"
-#define SERVERPORT 9000
-#define BUFSIZE    50
+
+#define MAX_BUFFER        1024
+#define SERVER_IP        "127.0.0.1"
+#define SERVER_PORT        3500
+
+
 
 using namespace std;
 
@@ -32,80 +37,101 @@ void TimerFunction(int value);
 GLvoid drawScene(GLvoid);
 void err_quit(char *msg);
 void err_display(char *msg);
+// 사용자 정의 데이터 수신 함수
+int recvn(SOCKET s, char *buf, int len, int flags);
+void testrecv();
 
 
-enum Key
+
+struct SOCKETINFO
 {
-	UP = 1,
-	DOWN,
-	LEFT,
-	RIGHT
+	WSAOVERLAPPED overlapped;
+	WSABUF dataBuffer;
+	int receiveBytes;
+	int sendBytes;
 };
 
-typedef struct pos
+map<SOCKET, Pawn*> MyCharaters;
+struct ClientPos
 {
-	float x;
-	float y;
-	float z;
-}Pos;
-
-class Pawn
-{
-	Pos CurrentLocation;
-
-
-
-public:
-
-	Pawn()
-	{
-		CurrentLocation.z = 0;
-	}
-
-
-	void SetCurrentLocation(Pos &p)
-	{
-		CurrentLocation = p;
-	}
-
-	void Draw()
-	{
-		glPushMatrix();
-		glTranslatef(CurrentLocation.x, CurrentLocation.y, CurrentLocation.z);
-		//glutSolidCone(10, 50, 10, 10);
-		glutSolidTeapot(10);
-		glPopMatrix();
-	}
-
+	SOCKET sock;
+	Pos position;
 };
 
+vector< ClientPos> ClientsPosition;
 
+SOCKET listenSocket;
 
+SOCKETINFO *socketInfo;
+DWORD sendBytes;
+DWORD receiveBytes;
+DWORD flags;
+int mySocketNum = 0;
 
-Pawn MyCharater;
-SOCKET sock;
 int main(int argc, char *argv[])
 {
-	int retval;
 
-	// 윈속 초기화
-	WSADATA wsa;
-	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+	// Winsock Start - winsock.dll 로드
+	WSADATA WSAData;
+	if (WSAStartup(MAKEWORD(2, 0), &WSAData) != 0)
+	{
+		printf("Error - Can not load 'winsock.dll' file\n");
 		return 1;
+	}
 
-	// socket()
-	sock = socket(AF_INET, SOCK_STREAM, 0);
-	if (sock == INVALID_SOCKET) err_quit("socket()");
+	// 1. 소켓생성
+	listenSocket = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);   // overlapped flag 붙여줌  WSA_FLAG_OVERLAPPED
+	if (listenSocket == INVALID_SOCKET)
+	{
+		printf("Error - Invalid socket\n");
+		return 1;
+	}
 
-	// connect()
-	SOCKADDR_IN serveraddr;
-	ZeroMemory(&serveraddr, sizeof(serveraddr));
-	serveraddr.sin_family = AF_INET;
-	serveraddr.sin_addr.s_addr = inet_addr(SERVERIP);
-	serveraddr.sin_port = htons(SERVERPORT);
-	retval = connect(sock, (SOCKADDR *)&serveraddr, sizeof(serveraddr));
-	if (retval == SOCKET_ERROR) err_quit("connect()");
 
+	// 서버정보 객체설정
+	SOCKADDR_IN serverAddr;
+	memset(&serverAddr, 0, sizeof(SOCKADDR_IN));
+	serverAddr.sin_family = AF_INET;
+	serverAddr.sin_port = htons(SERVER_PORT);
+	serverAddr.sin_addr.S_un.S_addr = inet_addr(SERVER_IP);
+
+	// 2. 연결요청
+	if (connect(listenSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) == SOCKET_ERROR)
+	{
+		printf("Error - Fail to connect\n");
+		// 4. 소켓종료
+		closesocket(listenSocket);
+		// Winsock End
+		WSACleanup();
+		return 1;
+	}
+	else
+	{
+		printf("Server Connected\n* Enter Message\n->");
+	}
+	int receiveBytes = recv(listenSocket, (char*)&mySocketNum, sizeof(mySocketNum), 0);
+	
+	int vecSize = 0;
+	
+	int retval = recv(listenSocket, (char*)&vecSize, sizeof(int), 0);
+	if (retval == SOCKET_ERROR) {
+		err_display(const_cast<char*>("recv()"));
+		exit(0);
+	}
+	cout << "클라 " << vecSize << " 명" << endl;
+	for (int i = 0; i < vecSize; ++i)
+	{
+		ClientPos cp;
+		retval = recvn(listenSocket, (char*)&cp, sizeof(ClientPos), 0);
+		if (retval == SOCKET_ERROR) {
+			err_display(const_cast<char*>("recv()"));
+			exit(0);
+		}
+		MyCharaters[cp.sock] = { new Pawn(cp.position) };
+	}
+	
+
+	HANDLE hThread = CreateThread(NULL, 0, [](LPVOID arg)->DWORD { testrecv(); return 0; }, 0, 0, NULL);
 
 
 	glutInit(&argc, argv);
@@ -126,13 +152,32 @@ int main(int argc, char *argv[])
 	glutMainLoop();
 
 	// closesocket()
-	closesocket(sock);
-
+	closesocket(listenSocket);
+	CloseHandle(hThread);
 	// 윈속 종료
 	WSACleanup();
 
 }
 
+void testrecv()
+{
+	while (1)
+	{
+		//int receiveBytes = recv(listenSocket, (char *)&position, sizeof(position), 0);
+		
+		ClientPos cp;
+		int retval = recv(listenSocket, (char*)&cp, sizeof(ClientPos), 0);
+		if (retval == SOCKET_ERROR) {
+			err_display(const_cast<char*>("recv()"));
+			exit(0);
+		}
+		if (MyCharaters.end() != MyCharaters.find(cp.sock))
+			MyCharaters[cp.sock]->SetCurrentLocation(cp.position);
+		else
+			MyCharaters[cp.sock] = { new Pawn(cp.position) };
+		drawScene();
+	}
+}
 
 void drawBoard()
 {
@@ -159,7 +204,9 @@ void drawBoard()
 	glColor3f(0.7, 0.1, 0.2);
 	glRotatef(-180.0, 1.0, 0.0, 0.0);
 	glTranslatef(200.0, 200.0, 50.0);
-	MyCharater.Draw();
+	for (auto &p : MyCharaters)
+		p.second->Draw();
+	//MyCharater.Draw();
 	glPopMatrix(); //%%
 	glPopMatrix();
 }
@@ -217,21 +264,38 @@ void Keyboard(unsigned char key, int x, int y)
 		break;
 	}
 }
+
+void NetworkProcess(int input)
+{
+
+	socketInfo = (struct SOCKETINFO *)malloc(sizeof(struct SOCKETINFO));
+	memset((void *)socketInfo, 0x00, sizeof(struct SOCKETINFO));
+	socketInfo->dataBuffer.len = sizeof(input);
+	socketInfo->dataBuffer.buf = (char *)&input;
+
+	// 3-1. 데이터 쓰기
+	int sendBytes = send(listenSocket, (char *)&input, sizeof(input), 0);
+	//if (sendBytes > 0)
+	//{
+	//	printf("TRACE - Send message : %s (%d bytes)\n", (char *)&input, sendBytes);
+	//	// 3-2. 데이터 읽기
+	//	int receiveBytes = recv(listenSocket, (char *)&position, sizeof(position), 0);
+	//}
+}
+
 void specialKey(int key, int x, int y)
 {
 	int retval = 0;
 	int input = 0;
-	Pos position = {};
 	switch (key)
 	{
 	case GLUT_KEY_LEFT:
 	{
 		input = LEFT;
-		retval = send(sock, (char *)&input, sizeof(int), 0);
-		retval = recv(sock, (char *)&position, sizeof(Pos), 0);
 
-		MyCharater.SetCurrentLocation(position);
-		//P.MoveLeft();
+		NetworkProcess(input);
+
+		//MyCharater.SetCurrentLocation(position);
 			
 		
 		break;
@@ -239,42 +303,29 @@ void specialKey(int key, int x, int y)
 	case GLUT_KEY_RIGHT:
 	{
 		input = RIGHT;
-		retval = send(sock, (char *)&input, sizeof(int), 0);
-		retval = recv(sock, (char *)&position, sizeof(Pos), 0);
-
-		MyCharater.SetCurrentLocation(position);
-
-		//P.MoveRight();
-			
+		NetworkProcess(input);
 		
 		break;
 	}
 	case GLUT_KEY_DOWN:
 	{
 		input = DOWN;
-		retval = send(sock, (char *)&input, sizeof(int), 0);
-		retval = recv(sock, (char *)&position, sizeof(Pos), 0);
+		NetworkProcess(input);
 
-		MyCharater.SetCurrentLocation(position);
-
-		//P.MoveBack();
 		
 		break;
 	}
 	case GLUT_KEY_UP:
 	{
 		input = UP;
-		retval = send(sock, (char *)&input, sizeof(int), 0);
-		retval = recv(sock, (char *)&position, sizeof(Pos), 0);
+		NetworkProcess(input);
 
-		MyCharater.SetCurrentLocation(position);
-
-		//P.MoveFoward();
 		break;
 	}
 	default:
 		break;
 	}
+	drawScene();
 }
 
 void TimerFunction(int value)
@@ -286,7 +337,8 @@ void TimerFunction(int value)
 
 
 void Mouse(int button, int state, int x, int y)
-{
+{ 
+
 	drawScene();
 	if (1)
 	{
@@ -327,4 +379,25 @@ void err_display(char *msg)
 		(LPTSTR)&lpMsgBuf, 0, NULL);
 	printf("[%s] %s", msg, (char *)lpMsgBuf);
 	LocalFree(lpMsgBuf);
+}
+
+
+// 사용자 정의 데이터 수신 함수
+int recvn(SOCKET s, char *buf, int len, int flags)
+{
+	int received;
+	char *ptr = buf;
+	int left = len;
+
+	while (left > 0) {
+		received = recv(s, ptr, left, flags);
+		if (received == SOCKET_ERROR)
+			return SOCKET_ERROR;
+		else if (received == 0)
+			break;
+		left -= received;
+		ptr += received;
+	}
+
+	return (len - left);
 }

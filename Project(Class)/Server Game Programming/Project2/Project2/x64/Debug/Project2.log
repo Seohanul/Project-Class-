@@ -1,0 +1,4 @@
+﻿  main.cpp
+d:\projects\project(class)\server game programming\project2\project2\main.cpp(190): warning C4305: '인수': 'double'에서 'GLfloat'(으)로 잘립니다.
+d:\projects\project(class)\server game programming\project2\project2\main.cpp(204): warning C4305: '인수': 'double'에서 'GLfloat'(으)로 잘립니다.
+  Project2.vcxproj -> D:\Projects\Project(Class)\Server Game Programming\Project2\x64\Debug\ClientProject.exe
