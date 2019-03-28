@@ -1,0 +1,52 @@
+﻿  stdafx.cpp
+  Collision.cpp
+  Command.cpp
+  Controller.cpp
+  Descriptor.cpp
+  DevConsole.cpp
+d:\projects\project(class)\network game programming\isaac - server\simplegame\devconsole.cpp(12): warning C4302: 'reinterpret_cast': 'HANDLE'에서 'long'(으)로 잘립니다.
+  Network.cpp
+d:\projects\project(class)\network game programming\isaac - server\simplegame\network.cpp(56): warning C4477: 'printf' : 서식 문자열 '%s'에 'char *' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'LPCTSTR'입니다.
+  d:\projects\project(class)\network game programming\isaac - server\simplegame\network.cpp(56): note: 서식 문자열에서 '%ls'을(를) 사용하는 것이 좋습니다.
+  d:\projects\project(class)\network game programming\isaac - server\simplegame\network.cpp(56): note: 서식 문자열에서 '%lls'을(를) 사용하는 것이 좋습니다.
+  d:\projects\project(class)\network game programming\isaac - server\simplegame\network.cpp(56): note: 서식 문자열에서 '%Ls'을(를) 사용하는 것이 좋습니다.
+  d:\projects\project(class)\network game programming\isaac - server\simplegame\network.cpp(56): note: 서식 문자열에서 '%ws'을(를) 사용하는 것이 좋습니다.
+d:\projects\project(class)\network game programming\isaac - server\simplegame\network.cpp(83): warning C4091: '': 변수를 선언하지 않으면 'DWORD (__cdecl *)(LPVOID)' 왼쪽은 무시됩니다.
+d:\projects\project(class)\network game programming\isaac - server\simplegame\network.cpp(130): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+d:\projects\project(class)\network game programming\isaac - server\simplegame\network.cpp(136): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  EventDispatcher.cpp
+  Window.cpp
+  CyanEngine.cpp
+  Gamepad.cpp
+  Graphics.cpp
+  Indices.cpp
+  Input.cpp
+  Physics.cpp
+  Renderer.cpp
+  Logo.cpp
+  Menu.cpp
+  Gameplay.cpp
+d:\projects\project(class)\network game programming\isaac - server\simplegame\gameplay.cpp(72): warning C4101: 'PLAYER2' :참조되지 않은 지역 변수입니다.
+d:\projects\project(class)\network game programming\isaac - server\simplegame\gameplay.cpp(120): warning C4101: 'PLAYER3' :참조되지 않은 지역 변수입니다.
+d:\projects\project(class)\network game programming\isaac - server\simplegame\cyanengine.h(117): warning C4267: '인수': 'size_t'에서 'u_int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  d:\projects\project(class)\network game programming\isaac - server\simplegame\cyanengine.h(74): note: 컴파일 중인 함수 템플릿 인스턴스화 'void Cyan::Add<T,State*,size_t&,float&,float&>(std::vector<State *,std::allocator<_Ty>> &,size_t *,size_t &,float &,float &)'에 대한 참조를 확인하십시오.
+          with
+          [
+              T=ShootState,
+              _Ty=State *
+          ]
+  d:\projects\project(class)\network game programming\isaac - server\simplegame\gameplay.cpp(24): note: 컴파일 중인 함수 템플릿 인스턴스화 'void Cyan::AddStatePrototype<ShootState,size_t&,float,float>(size_t *,size_t &,float &&,float &&)'에 대한 참조를 확인하십시오.
+  Scene.cpp
+  SimpleGame.cpp
+  코드를 생성하고 있습니다...
+d:\projects\project(class)\network game programming\isaac - server\simplegame\cyanengine.h(40): warning C4715: 'Cyan::GetIndex': 모든 제어 경로에서 값을 반환하지는 않습니다.
+d:\projects\project(class)\network game programming\isaac - server\simplegame\cyanengine.h(32): warning C4715: 'Cyan::GetID': 모든 제어 경로에서 값을 반환하지는 않습니다.
+  컴파일하고 있습니다...
+  Sound.cpp
+  Sprite.cpp
+  State.cpp
+d:\projects\project(class)\network game programming\isaac - server\simplegame\state.cpp(298): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Timer.cpp
+  World.cpp
+  코드를 생성하고 있습니다...
+  SimpleGame.vcxproj -> D:\Projects\Project(Class)\Network Game Programming\Isaac - Server\x64\Debug\SimpleGame.exe
