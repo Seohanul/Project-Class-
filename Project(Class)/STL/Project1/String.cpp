@@ -66,6 +66,11 @@ int String::getNum() const
 	return num;
 }
 
+char * String::getP() const
+{
+	return p;
+}
+
 std::ostream& operator<<(std::ostream& os, const String& s)
 {
 	for (int i = 0; i < s.num; ++i)

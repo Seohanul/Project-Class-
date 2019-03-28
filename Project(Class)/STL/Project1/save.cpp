@@ -16,7 +16,7 @@ void save(std::string fname)
 
 
 		 // 기록할 파일을 덧붙여쓰기 모드로 연다.
-	std::ofstream out("2019 STL 목금56 강의록(5).txt", std::ios::app);
+	std::ofstream out("2019 STL 목금56 강의록(6).txt", std::ios::app);
 
 
 

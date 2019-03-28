@@ -24,6 +24,8 @@ public:
 	void setNum(int n);
 
 	int getNum() const;
+
+	char* getP() const;
 private:
 
 
