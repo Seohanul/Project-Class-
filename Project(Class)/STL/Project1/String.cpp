@@ -33,7 +33,7 @@ String::String(const String & other) : num{ other.num }
 
 String::~String()
 {
-	std::cout << "~String() - " << this << std::endl;
+	//std::cout << "~String() - " << this << std::endl;
 	delete[] p;
 }
 
