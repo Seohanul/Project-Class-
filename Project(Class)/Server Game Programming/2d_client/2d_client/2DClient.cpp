@@ -15,7 +15,7 @@
 #include <d3d9.h>     // directX includes
 #include "d3dx9tex.h"     // directX includes
 #include "gpdumb1.h"
-#include "..\..\iocp_server\iocp_server\protocol.h"
+#include "..\..\IOCPServerProject\Protocol.h"
 
 #pragma comment (lib, "ws2_32.lib")
 
@@ -48,7 +48,7 @@ char buffer[80];                // used to print text
 
 								// demo globals
 BOB			player;				// 플레이어 Unit
-BOB			npc[MAX_NPC];      // NPC Unit
+//BOB			npc[MAX_NPC];      // NPC Unit
 BOB         skelaton[MAX_USER];     // the other player skelaton
 
 BITMAP_IMAGE reactor;      // the background   
@@ -79,32 +79,35 @@ void ProcessPacket(char *ptr)
 	static bool first_time = true;
 	switch (ptr[1])
 	{
-	case SC_PACKET_PUT_PLAYER:
+	case SC_LOGIN_OK:
+	{
+		sc_packet_login_ok *my_packet = reinterpret_cast<sc_packet_login_ok*>(ptr);
+		g_myid = my_packet->id;
+	}
+	
+	case SC_PUT_PLAYER:
 	{
 		sc_packet_put_player *my_packet = reinterpret_cast<sc_packet_put_player *>(ptr);
 		int id = my_packet->id;
-		if (first_time) {
-			first_time = false;
-			g_myid = id;
-		}
+		
 		if (id == g_myid) {
 			player.x = my_packet->x;
 			player.y = my_packet->y;
 			player.attr |= BOB_ATTR_VISIBLE;
 		}
-		else if (id < NPC_START) {
+		else if (id < MAX_USER) {
 			skelaton[id].x = my_packet->x;
 			skelaton[id].y = my_packet->y;
 			skelaton[id].attr |= BOB_ATTR_VISIBLE;
 		}
 		else {
-			npc[id - NPC_START].x = my_packet->x;
+		/*	npc[id - NPC_START].x = my_packet->x;
 			npc[id - NPC_START].y = my_packet->y;
-			npc[id - NPC_START].attr |= BOB_ATTR_VISIBLE;
+			npc[id - NPC_START].attr |= BOB_ATTR_VISIBLE;*/
 		}
 		break;
 	}
-	case SC_PACKET_POS:
+	case SC_POS:
 	{
 		sc_packet_pos *my_packet = reinterpret_cast<sc_packet_pos *>(ptr);
 		int other_id = my_packet->id;
@@ -114,29 +117,30 @@ void ProcessPacket(char *ptr)
 			player.x = my_packet->x;
 			player.y = my_packet->y;
 		}
-		else if (other_id < NPC_START) {
+		else if (other_id < MAX_USER) {
 			skelaton[other_id].x = my_packet->x;
 			skelaton[other_id].y = my_packet->y;
 		}
 		else {
-			npc[other_id - NPC_START].x = my_packet->x;
+	/*		npc[other_id - NPC_START].x = my_packet->x;
 			npc[other_id - NPC_START].y = my_packet->y;
+	*/
 		}
 		break;
 	}
 
-	case SC_PACKET_REMOVE_PLAYER:
+	case SC_REMOVE_PLAYER:
 	{
 		sc_packet_remove_player *my_packet = reinterpret_cast<sc_packet_remove_player *>(ptr);
 		int other_id = my_packet->id;
 		if (other_id == g_myid) {
 			player.attr &= ~BOB_ATTR_VISIBLE;
 		}
-		else if (other_id < NPC_START) {
+		else if (other_id < MAX_USER) {
 			skelaton[other_id].attr &= ~BOB_ATTR_VISIBLE;
 		}
 		else {
-			npc[other_id - NPC_START].attr &= ~BOB_ATTR_VISIBLE;
+			//npc[other_id - NPC_START].attr &= ~BOB_ATTR_VISIBLE;
 		}
 		break;
 	}
@@ -223,8 +227,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd,
 		send_wsabuf.len = sizeof(my_packet);
 		DWORD iobyte;
 		if (0 != x) {
-			if (1 == x) my_packet->type = CS_PACKET_RIGHT;
-			else my_packet->type = CS_PACKET_LEFT;
+			if (1 == x) my_packet->type = CS_RIGHT;
+			else my_packet->type = CS_LEFT;
 			int ret = WSASend(g_mysocket, &send_wsabuf, 1, &iobyte, 0, NULL, NULL);
 			if (ret) {
 				int error_code = WSAGetLastError();
@@ -232,8 +236,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd,
 			}
 		}
 		if (0 != y) {
-			if (1 == y) my_packet->type = CS_PACKET_DOWN;
-			else my_packet->type = CS_PACKET_UP;
+			if (1 == y) my_packet->type = CS_DOWN;
+			else my_packet->type = CS_UP;
 			WSASend(g_mysocket, &send_wsabuf, 1, &iobyte, 0, NULL, NULL);
 		}
 
@@ -431,18 +435,18 @@ int Game_Init(void *parms)
 	}
 
 	// create skelaton bob
-	for (int i = 0; i < MAX_NPC; ++i) {
-		if (!Create_BOB32(&npc[i], 0, 0, 64, 64, 1, BOB_ATTR_SINGLE_FRAME))
-			return(0);
-		Load_Frame_BOB32(&npc[i], UNIT_TEXTURE, 0, 4, 0, BITMAP_EXTRACT_MODE_CELL);
+	//for (int i = 0; i < MAX_NPC; ++i) {
+	//	if (!Create_BOB32(&npc[i], 0, 0, 64, 64, 1, BOB_ATTR_SINGLE_FRAME))
+	//		return(0);
+	//	Load_Frame_BOB32(&npc[i], UNIT_TEXTURE, 0, 4, 0, BITMAP_EXTRACT_MODE_CELL);
 
-		// set up stating state of skelaton
-		Set_Animation_BOB32(&npc[i], 0);
-		Set_Anim_Speed_BOB32(&npc[i], 4);
-		Set_Vel_BOB32(&npc[i], 0, 0);
-		Set_Pos_BOB32(&npc[i], 0, 0);
-		// Set_ID(&npc[i], i);
-	}
+	//	// set up stating state of skelaton
+	//	Set_Animation_BOB32(&npc[i], 0);
+	//	Set_Anim_Speed_BOB32(&npc[i], 4);
+	//	Set_Vel_BOB32(&npc[i], 0, 0);
+	//	Set_Pos_BOB32(&npc[i], 0, 0);
+	//	// Set_ID(&npc[i], i);
+	//}
 
 
 
@@ -495,9 +499,9 @@ int Game_Shutdown(void *parms)
 
 	// kill skelaton
 	for (int i = 0; i < MAX_USER; ++i) Destroy_BOB32(&skelaton[i]);
-	for (int i = 0; i < MAX_NPC; ++i)
+	/*for (int i = 0; i < MAX_NPC; ++i)
 		Destroy_BOB32(&npc[i]);
-
+*/
 	// shutdonw directdraw
 	DD_Shutdown();
 
@@ -550,7 +554,7 @@ int Game_Main(void *parms)
 	// draw the skelaton
 	Draw_BOB32(&player);
 	for (int i = 0; i<MAX_USER; ++i) Draw_BOB32(&skelaton[i]);
-	for (int i = NPC_START; i<MAX_NPC; ++i) Draw_BOB32(&npc[i]);
+	//for (int i = NPC_START; i<MAX_NPC; ++i) Draw_BOB32(&npc[i]);
 
 	// draw some text
 	wchar_t text[300];

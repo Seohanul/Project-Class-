@@ -57,6 +57,7 @@ void initialize()
 
 char get_new_id()
 {
+	while(true)
 	for (int i = 0; i < MAX_USER; ++i)
 		if (clients[i].connected == false) {
 			clients[i].connected = true;
@@ -64,23 +65,42 @@ char get_new_id()
 		}
 }
 
+void error_display(const char *msg, int err_no)
+{
+	WCHAR* lpMsgBuf;
+	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
+		FORMAT_MESSAGE_FROM_SYSTEM,
+		NULL, err_no, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		(LPTSTR)& lpMsgBuf, 0, NULL);
+	cout << msg;
+	wcout << L"에러 " << lpMsgBuf <<"코드 :  "<< err_no<< endl;
+	LocalFree(lpMsgBuf);
+	while (true)
+	{
+	}
+}
+
 void send_packet(int key, char* packet)
 {
 	SOCKET client_s = clients[key].socket;
 
 	
-	OVER_EX * over = new OVER_EX;
-
+	OVER_EX * over = new OVER_EX{};
+//	OVER_EX *over = reinterpret_cast<OVER_EX *>(malloc(sizeof(OVER_EX)));
+	// reinterpret_cast<OVER_EX *>(malloc(sizeof(
 	over->dataBuffer.len = packet[0];
 	over->dataBuffer.buf = over->messageBuffer;
 	memcpy(over->messageBuffer, packet, packet[0]);
-	ZeroMemory(&(over->overlapped), 0x00, sizeof(WSAOVERLAPPED));
-	
+	ZeroMemory(&(over->overlapped), sizeof(WSAOVERLAPPED));
+	over->is_recv = false;
+
 	if (WSASend(client_s, &over->dataBuffer, 1, NULL, 0, &(over->overlapped), NULL) == SOCKET_ERROR)
 	{
-		if (WSAGetLastError() != WSA_IO_PENDING)
+		int err_no = WSAGetLastError();
+		if (err_no != WSA_IO_PENDING)
 		{
-			cout << "Error - Fail WSASend(error_code : " << WSAGetLastError() << endl;
+			//cout << "Error - Fail WSASend(error_code : " << WSAGetLastError() << endl;
+			error_display("ERROR_SEND", err_no);
 		}
 	}
 
@@ -97,6 +117,40 @@ void send_pos_packet(char to, char obj)
 	packet.type = SC_POS;
 	packet.x = clients[obj].x;
 	packet.y = clients[obj].y;
+
+	send_packet(to, reinterpret_cast<char*>(&packet));
+}
+
+void send_login_ok_packet(char to)
+{
+	sc_packet_login_ok packet;
+	packet.id = to;
+	packet.size = sizeof(packet);
+	packet.type = SC_LOGIN_OK;
+	
+	send_packet(to, reinterpret_cast<char*>(&packet));
+}
+
+
+void send_put_player_packet(char to, char obj)
+{
+	sc_packet_put_player packet;
+	packet.id = obj;
+	packet.size = sizeof(packet);
+	packet.type = SC_PUT_PLAYER;
+	packet.x = clients[obj].x;
+	packet.y = clients[obj].y;
+
+	send_packet(to, reinterpret_cast<char*>(&packet));
+}
+
+
+void send_remove_player_packet(char to, char id)
+{
+	sc_packet_remove_player packet;
+	packet.id = id;
+	packet.size = sizeof(packet);
+	packet.type = SC_REMOVE_PLAYER;
 
 	send_packet(to, reinterpret_cast<char*>(&packet));
 }
@@ -137,13 +191,15 @@ void process_packet(char id, char* buf)
 
 
 	for (int i = 0; i < MAX_USER; ++i)
-		if(true == clients[id].connected)
+		if(true == clients[i].connected)
 			send_pos_packet(i, id);
 }
 
 void do_recv(char id)
 {
+	cout<<"recv"<<endl;
 	DWORD flags = 0;
+	DWORD len;
 
 	SOCKET client_s = clients[id].socket;
 
@@ -151,20 +207,31 @@ void do_recv(char id)
 
 	over->dataBuffer.len = MAX_BUFFER;
 	over->dataBuffer.buf = over->messageBuffer;
-	ZeroMemory(&(over->overlapped), 0x00, sizeof(WSAOVERLAPPED));
+	ZeroMemory(&(over->overlapped), sizeof(WSAOVERLAPPED));
 	// send 끝나면 recv또 호출 
 	if (WSARecv(client_s, &over->dataBuffer, 1, NULL, &flags, &(over->overlapped), NULL) == SOCKET_ERROR)
 	{
-		if (WSAGetLastError() != WSA_IO_PENDING)
+		int err_no = WSAGetLastError();
+		if (err_no != WSA_IO_PENDING)
 		{
-			cout << "Error - Fail WSARecv(error_code : " << WSAGetLastError() << endl;
+			error_display("ERROR_RECV", err_no);
+
+			//cout << "Error - Fail WSARecv(error_code : " << WSAGetLastError() << endl;
 		}
 	}
 
 }
 
 
-
+void disconnect(int id)
+{
+	for (int i = 0; i < MAX_USER; ++i) {
+		if (false == clients[i].connected) continue;
+		send_remove_player_packet(i, id);
+	}
+	closesocket(clients[id].socket);
+	clients[id].connected = false;
+}
 
 void worker_thread()
 {
@@ -173,8 +240,12 @@ void worker_thread()
 		DWORD io_byte;
 		ULONG key;
 		OVER_EX * lpover_ex;
-		bool is_error = GetQueuedCompletionStatus(g_iocp, &io_byte, &key, reinterpret_cast<LPWSAOVERLAPPED *>(&lpover_ex), INFINITE);
+		BOOL is_error = GetQueuedCompletionStatus(g_iocp, &io_byte, &key, reinterpret_cast<LPWSAOVERLAPPED *>(&lpover_ex), INFINITE);
 
+		if (FALSE == is_error)
+			error_display("GQCS", WSAGetLastError());
+
+		if (0 == io_byte) disconnect(key);
 
 		if (lpover_ex->is_recv) {
 			int rest_size = io_byte;
@@ -222,7 +293,7 @@ void do_accept()
 	}
 
 	// 1. 소켓생성  
-	SOCKET listenSocket = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED); //  WSA_FLAG_OVERLAPPED flag 무조건 해줘야함
+	SOCKET listenSocket = WSASocketW(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED); //  WSA_FLAG_OVERLAPPED flag 무조건 해줘야함
 	if (listenSocket == INVALID_SOCKET)
 	{
 		cout << "Error - Invalid socket\n";
@@ -264,7 +335,7 @@ void do_accept()
 	SOCKET clientSocket;
 	DWORD flags;
 
-	while (1)
+	while (true)
 	{
 		clientSocket = accept(listenSocket, (struct sockaddr *)&clientAddr, &addrLen);
 		if (clientSocket == INVALID_SOCKET)
@@ -281,16 +352,29 @@ void do_accept()
 		clients[new_id].socket = clientSocket;
 		clients[new_id].over.dataBuffer.len = MAX_BUFFER;
 		clients[new_id].over.dataBuffer.buf = clients[clientSocket].over.messageBuffer;
+		clients[new_id].over.is_recv = true;
 		clients[new_id].x = START_X;
-		clients[new_id].y = START_X;
+		clients[new_id].y = START_Y;
+	
 		flags = 0;
 
 		// recv 하기전에 IOCP에 넣어야함
 
 		CreateIoCompletionPort(reinterpret_cast<HANDLE>(clientSocket), g_iocp, new_id, 0);
+		clients[new_id].connected = true;
 
+		send_login_ok_packet(new_id);
+		for (int i = 0; i < MAX_USER; ++i) {
+			if (false == clients[i].connected) continue;
+			send_put_player_packet(i, new_id);
+		}
+		for (int i = 0; i < MAX_USER; ++i) {
+			if (false == clients[i].connected) continue;
+			if (i == new_id) continue;
+			send_put_player_packet(new_id, i);
+		}
 
-		do_recv(new_id);
+		do_recv(new_id); 
 	}
 
 	// 6-2. 리슨 소켓종료
@@ -299,12 +383,15 @@ void do_accept()
 	// Winsock End
 	WSACleanup();
 
+	return;
 }
 
 int main()
 {
-	initialize();
 	vector<thread> worker_threads;
+	_wsetlocale(LC_ALL, L"korean");
+	wcout.imbue(locale("korean"));
+	initialize();
 
 	g_iocp = CreateIoCompletionPort(INVALID_HANDLE_VALUE, 0, 0, 0);
 	for (int i = 0; i < 4; ++i)

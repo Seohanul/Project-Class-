@@ -1,22 +1,19 @@
 #pragma once
 
-constexpr int MAX_USER		= 10;
-constexpr int WORLD_WIDTH	= 8;
-constexpr int WORLD_HEIGHT	= 8;
+#define MAX_USER		 10
+#define WORLD_WIDTH	 8
+#define WORLD_HEIGHT	 8
+#define SERVER_PORT  3500
 
-constexpr int SERVER_PORT = 3500;
+#define CS_UP			 1
+#define CS_DOWN		 2
+#define CS_LEFT		 3
+#define CS_RIGHT		 4
 
-
-constexpr int CS_UP			= 1;
-constexpr int CS_DOWN		= 2;
-constexpr int CS_LEFT		= 3;
-constexpr int CS_RIGHT		= 4;
-
-
-constexpr int SC_LOGIN_OK			= 1;
-constexpr int SC_PUT_PLAYER			= 2;
-constexpr int SC_REMOVE_PLAYER		= 3;
-constexpr int SC_POS				= 4;
+#define SC_LOGIN_OK			 1
+#define SC_PUT_PLAYER			 2
+#define SC_REMOVE_PLAYER		 3
+#define SC_POS				 4
 
 #pragma pack(push, 1)
 struct sc_packet_pos
@@ -76,4 +73,4 @@ struct cs_packet_right
 };
 
 
-#pragma pack(pop, 1)
+#pragma pack(pop)
