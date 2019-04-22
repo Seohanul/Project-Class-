@@ -12,18 +12,21 @@ WIN closesocket    : 소켓종료
 
 #include <iostream>
 #include <map>
+#include <unordered_set>
 #include "Protocol.h"
 using namespace std;
 
 #include <winsock2.h>
 #include <thread>
+#include <mutex>
+
 #include <vector>
 #pragma comment(lib, "Ws2_32.lib")
 
 #define MAX_BUFFER        1024
 #define START_X	4
 #define START_Y	4
-
+#define VIEW_RADIUS         3
 struct OVER_EX
 {
 	WSAOVERLAPPED overlapped;		
@@ -40,6 +43,8 @@ struct SOCKETINFO
 	char packet_buf[MAX_BUFFER];		// 다 못받았을 경우의 버퍼
 	int prev_size;
 	int x, y;
+	mutex vlm;
+	unordered_set<int> viewlist;
 };
 
 // 동기식 IO에는 버퍼를 아무렇게나 해놔도 상관없고, 하나여도 상관없지만,
@@ -155,6 +160,18 @@ void send_remove_player_packet(char to, char id)
 	send_packet(to, reinterpret_cast<char*>(&packet));
 }
 
+bool Is_Near_Object(int a, int b)
+{
+	if (VIEW_RADIUS < abs(clients[a].x - clients[b].x))
+		return false;
+
+	if (VIEW_RADIUS < abs(clients[a].y - clients[b].y))
+		return false;
+
+	return true;
+}
+
+
 
 void process_packet(char id, char* buf)
 {
@@ -193,6 +210,58 @@ void process_packet(char id, char* buf)
 	for (int i = 0; i < MAX_USER; ++i)
 		if(true == clients[i].connected)
 			send_pos_packet(i, id);
+
+
+	clients[id].vlm.lock();
+	//if (0 != clients[id].viewlist.size())
+	unordered_set<int> old_viewlist = clients[id].viewlist;
+	clients[id].vlm.unlock();
+	unordered_set<int> new_viewlist;
+
+	for (int i = 0; i < MAX_USER; ++i) {
+		if ((true == clients[i].connected) && (true == Is_Near_Object(id, i) && (i != id)))
+			new_viewlist.insert(i);
+	}   // MAX_USER 만큼 루프를 돌면서 현재 클라의 시야에 어떤 클라가 들어왔는지 체크해서 new_list에 넣어줌
+	// 그니까 이미 new list에는 내시야에 들어와있는 친구들이 다 들어와있음
+
+	for (auto cl : new_viewlist) {
+
+		if (0 != old_viewlist.count(cl)) { // oldviewlist에 cl이 들어 있으면?
+			clients[cl].vlm.lock();
+			if (0 != clients[cl].viewlist.count(id)) // 그 클라의 viewlist에 내가 있다면
+				send_pos_packet(cl, id);         // 그 클라에게 내가 이동한걸 알려줘라
+			else {                           // 그 클라의 시야에 내가 없다면? 즉, 내 시야에는 그 클라가 있는데 그 클라 시야에는 내가 없는것 이므로 추가해줘야함 (즉, 내가 움직이면서 시야에 들어온 클라를 뜻함)
+				clients[cl].viewlist.insert(id);  // 그 클라 시야에다가 나를 추가해줘라
+				send_put_player_packet(cl, id); // 그리고 방금 내가 시야에 들어온거니까 플레이어를 추가해줘야함
+			}
+			clients[cl].vlm.unlock();
+		}
+		else // 움직이기 전에 내 시야에 클라가 없었다면? 즉, 지금 새로 추가해야되는 상황
+		{
+			clients[id].vlm.lock();
+			//      old_viewlist.insert(cl);
+			   //   clients[id].viewlist.insert(cl);
+				  //clients[id].viewlist.emplace(cl);
+			clients[id].viewlist.insert(cl);
+			send_put_player_packet(id, cl);
+			if (0 != clients[cl].viewlist.count(id))
+				send_pos_packet(cl, id);
+			else {
+				clients[cl].viewlist.insert(id);
+				send_put_player_packet(cl, id);
+			}
+			clients[id].vlm.unlock();
+		}
+	}
+
+	for (auto cl : old_viewlist) {      //여기선 더 할거있음
+		if (0 != new_viewlist.count(cl)) continue;  // 이런식으로 하는건데 여기서도 erase해야함
+		send_remove_player_packet(cl, id);
+		send_remove_player_packet(id, cl);
+	}
+
+
+
 }
 
 void do_recv(char id)
@@ -230,6 +299,7 @@ void disconnect(int id)
 		send_remove_player_packet(i, id);
 	}
 	closesocket(clients[id].socket);
+	clients[id].viewlist.clear();
 	clients[id].connected = false;
 }
 
@@ -355,7 +425,7 @@ void do_accept()
 		clients[new_id].over.is_recv = true;
 		clients[new_id].x = START_X;
 		clients[new_id].y = START_Y;
-	
+		clients[new_id].viewlist.clear();
 		flags = 0;
 
 		// recv 하기전에 IOCP에 넣어야함

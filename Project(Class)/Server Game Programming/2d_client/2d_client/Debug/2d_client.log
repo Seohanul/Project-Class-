@@ -1,2 +1,5 @@
 ﻿  2DClient.cpp
-  2d_client.vcxproj -> C:\Users\seo\Desktop\2d_client\Debug\2d_client.exe
+d:\projects\project(class)\server game programming\2d_client\2d_client\2dclient.cpp(16): fatal error C1083: 포함 파일을 열 수 없습니다. 'd3dx9tex.h': No such file or directory
+  gpdumb1.cpp
+d:\projects\project(class)\server game programming\2d_client\2d_client\gpdumb1.cpp(12): fatal error C1083: 포함 파일을 열 수 없습니다. 'd3dx9tex.h': No such file or directory
+  코드를 생성하고 있습니다...

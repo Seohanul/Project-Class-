@@ -50,6 +50,7 @@ int main()
 	for (const String& s : v)
 		cout << s << endl;
 
-	save("소스.cpp");
+	//save("소스.cpp");
+
 }
 
