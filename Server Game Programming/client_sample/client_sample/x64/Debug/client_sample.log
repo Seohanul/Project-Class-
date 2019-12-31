@@ -1,0 +1,3 @@
+﻿  client.cpp
+c:\users\hanul seo\desktop\2015182050_서한울_게임서버프로그래밍\client_sample\client_sample\client.cpp(237): warning C4390: ';': 제어된 빈 문이 있습니다. 이 문이 필요합니까?
+  client_sample.vcxproj -> C:\Users\hanul Seo\Desktop\2015182050_서한울_게임서버프로그래밍\client_sample\x64\Debug\client_sample.exe
